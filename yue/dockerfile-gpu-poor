@@ -1,0 +1,47 @@
+# Lightweight CUDA base with dev tools – great for custom PyTorch builds
+FROM nvidia/cuda:12.4.1-devel-ubuntu22.04
+
+# -- Environment Setup --
+ENV DEBIAN_FRONTEND=noninteractive \
+    NVIDIA_VISIBLE_DEVICES=all \
+    NVIDIA_DRIVER_CAPABILITIES=compute,utility \
+    CUDA_HOME=/usr/local/cuda \
+    PATH=/usr/local/cuda/bin:$PATH \
+    LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH \
+    PYTHONUNBUFFERED=1 \
+    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
+# -- System Dependencies --
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3.10 python3-pip python3.10-venv \
+    git git-lfs \
+    && python3 -m pip install --upgrade pip \
+    && git lfs install \
+    && rm -rf /var/lib/apt/lists/*
+
+# -- Create working directory --
+WORKDIR /workspace
+
+# -- Clone and archive model repos --
+RUN git clone --depth=1 https://github.com/deepbeepmeep/YuEGP.git && \
+    tar -czf YuEGP.tar.gz YuEGP && rm -rf YuEGP
+
+RUN git clone --depth=1 https://huggingface.co/m-a-p/xcodec_mini_infer.git && \
+    tar -czf xcodec_mini_infer.tar.gz xcodec_mini_infer && rm -rf xcodec_mini_infer
+
+# -- Add launch script --
+COPY startup-gpu-poor.sh .
+
+# -- Port exposed by default (adjust if needed) --
+EXPOSE 7860
+
+# -- Runtime configuration via ENV vars --
+ENV YUEGP_PROFILE=1 \
+    YUEGP_CUDA_IDX=0 \
+    YUEGP_ENABLE_ICL=0 \
+    YUEGP_TRANSFORMER_PATCH=0 \
+    YUEGP_AUTO_UPDATE=0 \
+    YUEGP_SERVER_USER="" \
+    YUEGP_SERVER_PASSWORD=""
+
+CMD ["bash", "./startup-gpu-poor.sh"]
