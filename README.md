@@ -37,6 +37,20 @@ Current structure:
 | 🎶 **YuE-GP** | Music Generation (Optimized) | 8GB+ VRAM | Web UI | [Setup Guide](yue/README-GPU-POOR.md) |
 | 🎬 **Wan2GP** | Video-to-Audio Synthesis | 8GB+ VRAM | Web UI | *Coming Soon* |
 
+---
+
+## 🔮 Coming Soon
+
+Actively working on containerizing these cutting-edge AI models:
+
+| Model | Type | Description | Repository |
+|-------|------|-------------|------------|
+| 📸 **PhotoMaker** | Image Generation | Customizing realistic human photos via stochastic identity mixing | [TencentARC/PhotoMaker](https://github.com/TencentARC/PhotoMaker) |
+| 🗣️ **Fantasy Talking** | Video Generation | High-quality talking face generation with identity preservation | [Fantasy-AMAP/fantasy-talking](https://github.com/Fantasy-AMAP/fantasy-talking) |
+| 📚 **SEED-Story** | Multimodal Storytelling | Generate rich, multimodal stories with consistent characters and plots | [TencentARC/SEED-Story](https://github.com/TencentARC/SEED-Story) |
+
+*Watch this space – these containerized models will be available soon with the same zero-setup experience!*
+
 ### 🚀 Quick Start
 
 Choose your model and run a single command:
