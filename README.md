@@ -1,8 +1,8 @@
 # 🐳 docker-ai-models
 
-**Production-Ready Dockerfiles for AI Models – Zero Setup, Maximum Results**
+**Ready-to-Run Dockerized AI Models – Zero Setup, Maximum Results**
 
-Transform complex AI model deployments into simple Docker commands. This repository provides optimized, tested containers for cutting-edge AI models across music, video, image, and text generation. No dependency hell, no environment conflicts – just pull, run, and create.
+Transform complex AI model deployments into simple Docker commands. This repository provides optimized, tested containers for cutting-edge AI models across music, comics, video, and text generation. No dependency hell, no environment conflicts – just build, run, and create.
 
 ---
 
@@ -20,12 +20,16 @@ Current structure:
 ├── yue/                    # YuE: Full-song music generation
 │   ├── dockerfile          # Standard GPU build (24GB+ VRAM)
 │   ├── dockerfile-gpu-poor # Lightweight build (8GB+ VRAM)
+│   ├── gradio_interface.py # Web interface
 │   ├── startup.sh          # Standard launch script
 │   └── startup-gpu-poor.sh # GPU-constrained launch script
-├── seed-story/             # SEED-Story: Multimodal story generation
-│   ├── dockerfile          # GPU build (16GB+ VRAM)
-│   ├── startup.sh          # Launch script with web/CLI modes
-│   └── gradio_interface.py # Advanced web interface
+├── seed-story/             # SEED-Story: Comic story generation
+│   ├── dockerfile          # GPU build (8GB+ VRAM)
+│   ├── minimal_gradio.py   # Main web interface
+│   ├── simple_comic_generator.py # Fallback generator
+│   ├── model_downloader.py # Model management
+│   ├── startup.sh          # Launch script
+│   └── requirements.txt    # Python dependencies
 ├── wan/                    # Wan2GP: Video-to-audio generation
 │   ├── dockerfile-gpu-poor # GPU-efficient build
 │   └── startup-gpu-poor.sh # Launch script
@@ -39,8 +43,8 @@ Current structure:
 |-------|------|----------|-----------|---------------|
 | 🎵 **YuE** | Lyrics-to-Song Generation | 24GB+ VRAM | Web UI + CLI | [Setup Guide](yue/README.md) |
 | 🎶 **YuE-GP** | Music Generation (Optimized) | 8GB+ VRAM | Web UI | [Setup Guide](yue/README-GPU-POOR.md) |
-| 📚 **SEED-Story** | Multimodal Story Generation | 16GB+ VRAM | Web UI + CLI | [Setup Guide](seed-story/README.md) |
-| 🎬 **Wan2GP** | Video-to-Audio Synthesis | 8GB+ VRAM | Web UI | *Coming Soon* |
+| 🎬 **SEED-Story** | Comic Story Generation | 8GB+ VRAM | Web UI | [Setup Guide](seed-story/README.md) |
+| �️ **Wan2GP** | Video-to-Audio Synthesis | 8GB+ VRAM | Web UI | *Coming Soon* |
 
 ---
 
@@ -61,15 +65,15 @@ Choose your model and run a single command:
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/docker-ai-models.git
+git clone https://github.com/Ricky-G/docker-ai-models.git
 cd docker-ai-models
 
 # Navigate to your chosen model
-cd yue/  # or wan/
+cd seed-story/  # or yue/ or wan/
 
 # Build and run (see individual README files for specific commands)
-docker build -f dockerfile -t model:latest .
-docker run --gpus all -p 7860:7860 model:latest
+docker build -t seed-story .
+docker run --gpus all -p 7860:7860 -v "C:\_Models\seed-story:/app/models" seed-story
 ```
 
 Open `http://localhost:7860` in your browser and start creating!
@@ -81,7 +85,7 @@ Open `http://localhost:7860` in your browser and start creating!
 - **🔧 Zero Configuration** – No dependency hunting, no environment conflicts
 - **⚡ Hardware Optimized** – Multiple builds for different GPU capabilities
 - **🌐 Web Interfaces** – Beautiful, intuitive web UIs for all models
-- **📦 Production Ready** – Tested, stable containers ready for deployment
+- **📦 Ready to Run** – Tested, stable containers that work out of the box
 - **⏱️ Time Saving** – From hours of setup to minutes of runtime
 - **🔄 Reproducible** – Same results, every time, everywhere
 
@@ -90,6 +94,7 @@ Open `http://localhost:7860` in your browser and start creating!
 ## 🛠️ How It Works
 
 Each model directory contains:
+
 - **Optimized Dockerfiles** for different hardware configurations
 - **Automated startup scripts** handling all dependencies
 - **Comprehensive documentation** with step-by-step guides
