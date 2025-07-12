@@ -1,6 +1,9 @@
 # SEED-Story Docker Image for Multimodal Story Generation
 # Based on TencentARC/SEED-Story with Gradio web interface
-# https://github.com/TencentARC/SEED-Story
+# https://github.com/Ricky-G/SEED-Story
+
+# Enable Docker BuildKit for better caching
+# syntax=docker/dockerfile:1
 
 # Use NVIDIA PyTorch base image with CUDA support
 FROM nvcr.io/nvidia/pytorch:23.10-py3
@@ -8,8 +11,10 @@ FROM nvcr.io/nvidia/pytorch:23.10-py3
 # Set working directory
 WORKDIR /app
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
+# Install system dependencies with cache mount
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get update && apt-get install -y \
     git \
     wget \
     curl \
@@ -20,8 +25,7 @@ RUN apt-get update && apt-get install -y \
     libxrender-dev \
     libglib2.0-0 \
     libgl1-mesa-glx \
-    libgomp1 \
-    && rm -rf /var/lib/apt/lists/*
+    libgomp1
 
 # Set environment variables
 ENV PYTHONPATH=/app:$PYTHONPATH
@@ -30,23 +34,19 @@ ENV HF_HOME=/app/models/huggingface
 ENV SEED_STORY_MODE=web
 ENV GRADIO_SERVER_NAME=0.0.0.0
 ENV GRADIO_SERVER_PORT=7860
+# Disable problematic libraries
+ENV USE_TRANSFORMER_ENGINE=False
+ENV ACCELERATE_USE_TRANSFORMER_ENGINE=False
+# Enable pip cache dir
+ENV PIP_CACHE_DIR=/root/.cache/pip
+# Fix Gradio localhost issue
+ENV GRADIO_ALLOW_FLAGGING=never
+ENV GRADIO_ANALYTICS_ENABLED=False
 
-# Clone SEED-Story repository
-RUN git clone https://github.com/TencentARC/SEED-Story.git /tmp/seed-story && \
+# Clone SEED-Story repository (this layer is cached unless the repo changes)
+RUN git clone https://github.com/Ricky-G/SEED-Story.git /tmp/seed-story && \
     cp -r /tmp/seed-story/* /app/ && \
     rm -rf /tmp/seed-story
-
-# Install Python dependencies
-COPY requirements-docker.txt .
-RUN pip install --no-cache-dir -r requirements-docker.txt
-
-# Install additional dependencies for web interface
-RUN pip install --no-cache-dir \
-    gradio==4.44.0 \
-    gradio-client==0.18.0 \
-    spaces==0.28.3 \
-    psutil==5.9.8 \
-    pympler==0.9
 
 # Create directories for models and data
 RUN mkdir -p /app/pretrained \
@@ -56,10 +56,39 @@ RUN mkdir -p /app/pretrained \
     /app/data/output \
     /app/data/temp
 
-# Copy startup script and Gradio interface
+# Uninstall problematic packages first
+RUN pip uninstall -y transformer-engine accelerate || true
+
+# Install base/stable requirements first (this layer will be cached)
+COPY requirements-base.txt .
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --no-cache-dir -r requirements-base.txt
+
+# Install frequently changing requirements (separate layer)
+COPY requirements.txt .
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --no-cache-dir -r requirements.txt
+
+# Install additional dependencies for web interface
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --no-cache-dir \
+    gradio==3.50.2 \
+    gradio-client==0.6.1 \
+    spaces==0.28.3 \
+    psutil==5.9.8 \
+    pympler==0.9
+
+# Reinstall transformers without accelerate dependency
+RUN --mount=type=cache,target=/root/.cache/pip,sharing=locked \
+    pip install --no-cache-dir --no-deps transformers==4.35.2 && \
+    pip install --no-cache-dir tokenizers safetensors huggingface-hub
+
+# Copy application files (do this last to maximize caching)
 COPY startup.sh /app/startup.sh
-COPY gradio_interface.py /app/gradio_interface.py
+COPY minimal_gradio.py /app/minimal_gradio.py
+COPY simple_comic_generator.py /app/simple_comic_generator.py
 COPY model_downloader.py /app/model_downloader.py
+COPY verify_setup.py /app/verify_setup.py
 
 # Make startup script executable
 RUN chmod +x /app/startup.sh

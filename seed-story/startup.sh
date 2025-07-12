@@ -24,11 +24,23 @@ check_gpu() {
 check_models() {
     echo "📁 Checking model directories..."
     
-    # Check for pretrained models
-    if [ ! -d "/app/pretrained" ]; then
-        echo "🔄 Creating pretrained models directory..."
-        mkdir -p /app/pretrained
+    # Use mounted volume for models if available, otherwise use container directory
+    if [ -d "/app/models" ] && [ "$(ls -A /app/models 2>/dev/null)" ]; then
+        MODELS_DIR="/app/models"
+        echo "✅ Using mounted models directory: $MODELS_DIR"
+    else
+        MODELS_DIR="/app/pretrained"
+        echo "⚠️  No mounted models directory found, using container directory: $MODELS_DIR"
     fi
+    
+    # Check for pretrained models
+    if [ ! -d "$MODELS_DIR" ]; then
+        echo "🔄 Creating models directory..."
+        mkdir -p "$MODELS_DIR"
+    fi
+    
+    # Export for use by model downloader
+    export SEED_STORY_MODELS_DIR="$MODELS_DIR"
     
     # Check if essential models exist
     local required_models=(
@@ -39,7 +51,7 @@ check_models() {
     
     local missing_models=()
     for model in "${required_models[@]}"; do
-        if [ ! -d "/app/pretrained/$model" ]; then
+        if [ ! -d "$MODELS_DIR/$model" ]; then
             missing_models+=("$model")
         fi
     done
@@ -47,10 +59,11 @@ check_models() {
     if [ ${#missing_models[@]} -gt 0 ]; then
         echo "⚠️  Missing required models: ${missing_models[*]}"
         echo "   Use model_downloader.py to download missing models"
+        echo "   Downloading to: $MODELS_DIR"
         echo "   Starting model downloader..."
         python3 /app/model_downloader.py
     else
-        echo "✅ All required models found"
+        echo "✅ All required models found in $MODELS_DIR"
     fi
 }
 
@@ -64,12 +77,11 @@ init_environment() {
     # Create output directories
     mkdir -p /app/data/output /app/data/input /app/data/temp
     
-    # Check if Qwen VIT extraction is needed
-    if [ ! -f "/app/pretrained/qwen_vit_g.pth" ]; then
-        echo "🔄 Extracting Qwen VIT weights..."
-        cd /app
-        python3 src/tools/reload_qwen_vit.py || echo "⚠️  VIT extraction failed - may need manual setup"
-    fi
+    # Use the same models directory as set in check_models
+    MODELS_DIR=${SEED_STORY_MODELS_DIR:-"/app/pretrained"}
+    
+    # Skip VIT extraction - script not available in this setup
+    echo "⚠️  Skipping Qwen VIT extraction (script not available)"
     
     echo "✅ Environment initialized"
 }
@@ -81,7 +93,17 @@ start_web_interface() {
     echo "   Use docker run -p 7860:7860 to map the port"
     
     cd /app
-    python3 gradio_interface.py
+    
+    # Use simple interface to avoid complex dependency issues
+    echo "🔧 Starting with simple interface (avoiding dependency conflicts)..."
+    # Try the simple comic generator first
+    if [ -f "simple_comic_generator.py" ]; then
+        echo "🎨 Using simple comic generator..."
+        python3 simple_comic_generator.py
+    else
+        echo "📝 Falling back to minimal gradio..."
+        python3 minimal_gradio.py
+    fi
 }
 
 # Function to start CLI mode

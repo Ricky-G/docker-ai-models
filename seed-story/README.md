@@ -1,249 +1,205 @@
-# 🎬 SEED-Story Docker Setup
+# 🎬 SEED-## 🌟 What This Does
 
-**Multimodal Long Story Generation with Large Language Model**
+Enter a text prompt like "a cat exploring space" and get:
 
-> Generate rich, coherent multimodal stories with consistent characters and style. SEED-Story creates visual narratives that span up to 25 sequences with both narrative text and generated images.
+- 📖 **Generated Story Text**: Multi-panel narrative with consistent plot
+- 🎨 **Comic Images**: AI-generated illustrations using Stable Diffusion XL
+- 🖥️ **Web Interface**: Beautiful Gradio UI accessible via browser
+- 🔄 **Customizable**: Adjust number of panels (1-8) and story themes
 
-[![arXiv](https://img.shields.io/badge/arXiv-2407.08683-red.svg)](https://arxiv.org/abs/2407.08683)
-[![Hugging Face](https://img.shields.io/badge/🤗-Models-yellow.svg)](https://huggingface.co/TencentARC/SEED-Story)
-[![GitHub](https://img.shields.io/badge/GitHub-TencentARC/SEED--Story-blue.svg)](https://github.com/TencentARC/SEED-Story)
-
-## 🌟 Features
-
-- **🎨 Multimodal Generation**: Creates both narrative text and corresponding images
-- **🔗 Character Consistency**: Maintains consistent characters and style throughout the story
-- **📚 Long-form Stories**: Generates stories up to 25 sequences long
-- **🌐 Web Interface**: Beautiful Gradio web UI for easy interaction
-- **🐳 Docker Ready**: Complete containerized solution with GPU support
-- **⚙️ Configurable**: Adjustable story length, generation parameters, and styles
+![Comic Example](https://via.placeholder.com/600x300/4CAF50/white?text=Comic+Story+Panel+Example)
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **GPU**: NVIDIA GPU with 16GB+ VRAM (24GB+ recommended)
-- **Storage**: ~32GB for all models
-- **Docker**: Docker with NVIDIA Container Runtime
-- **Memory**: 16GB+ system RAM
+- **NVIDIA GPU** with 8GB+ VRAM (16GB+ recommended)
+- **Docker** with NVIDIA Container Runtime
+- **~20GB** free disk space for models
 
 ### 1. Build the Container
 
 ```bash
-# Clone the repository
-git clone <repository-url>
-cd docker-ai-models/seed-story
+git clone https://github.com/Ricky-G/docker-ai-models.gitr
 
-# Build the Docker image
+cd docker-ai-models/seed-story
 docker build -t seed-story .
 ```
 
-### 2. Run Web Interface
+### 2. Run with GPU Support
 
 ```bash
-# Start web interface (default mode)
-docker run --gpus all -p 7860:7860 -v $(pwd)/data:/app/data seed-story
+# Create models directory first
+mkdir -p C:\_Models\seed-story
 
-# Access the interface
-open http://localhost:7860
+# Run with persistent model caching
+docker run --name seed-story-container \
+  --gpus all \
+  -p 7860:7860 \
+  -v "C:\_Models\seed-story:/app/models" \
+  -v "C:\_Models\seed-story\pip-cache:/root/.cache/pip" \
+  seed-story
 ```
 
-### 3. CLI Mode
+### 3. Access the Web Interface
 
-```bash
-# Interactive CLI mode
-docker run --gpus all -e SEED_STORY_MODE=cli -it seed-story
+Open your browser and go to: <http://localhost:7860>
 
-# Run specific script
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story src/inference/gen_george.py
-```
+**That's it!** 🎉 Enter a prompt and start generating comics!
 
-## 📋 Model Requirements
+## 📋 How It Works
 
-The following models will be downloaded automatically on first run:
+### AI Models Used
 
-| Model | Size | Description |
-|-------|------|-------------|
-| **Stable Diffusion XL** | ~7GB | Base image generation model |
-| **Llama-2-7b-hf** | ~13GB | Language model for text generation |
-| **Qwen-VL-Chat** | ~10GB | Vision-language model for understanding |
-| **SEED-Story Checkpoints** | ~2GB | Pre-trained SEED-Story weights |
+| Model | Size | Purpose |
+|-------|------|---------|
+| **Stable Diffusion XL** | ~7GB | Generates comic panel images |
+| **Llama-2-7B** | ~13GB | Creates story narratives |
+| **Qwen-VL-Chat** | ~10GB | Vision-language understanding |
 
-**Total Storage**: ~32GB + working space
+**Total Storage**: ~20GB (models auto-download on first run)
 
-### Manual Model Download
+### Generation Process
 
-```bash
-# Download models manually
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story python3 model_downloader.py
+1. **Input**: You enter a text prompt (e.g., "space adventure")
+2. **Story Creation**: AI generates a multi-panel narrative
+3. **Image Generation**: Each panel gets a matching AI-generated image
+4. **Display**: View your complete comic story in the web interface
 
-# List required models
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story python3 model_downloader.py --list
-```
+## 🎯 Example Usage
 
-## 🎯 Usage Examples
+### Web Interface Steps
 
-### Web Interface
+1. Open <http://localhost:7860> in your browser
+2. Enter a story prompt like:
+   - "a cat discovering magic"
+   - "robot exploring ancient ruins"
+   - "wizard learning spells"
+3. Choose number of panels (1-8)
+4. Click "Generate Comic Story"
+5. Watch as your story unfolds with images!
 
-1. **Upload an Image**: Provide a starting image for your story
-2. **Enter Opening Text**: Write the beginning of your story
-3. **Configure Settings**: Adjust story length and generation parameters
-4. **Generate**: Click "Generate Story" and watch your multimodal story unfold
+### Sample Prompts
 
-### CLI Examples
-
-```bash
-# Generate story with custom parameters
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story \
-  python3 src/inference/gen_george.py
-
-# Visualize story with attention
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story \
-  python3 src/inference/vis_george_sink.py
-```
+- **Adventure**: "brave explorer finds hidden treasure"
+- **Fantasy**: "young wizard saves magical kingdom" 
+- **Sci-Fi**: "astronaut discovers alien civilization"
+- **Mystery**: "detective solves impossible crime"
 
 ## ⚙️ Configuration
 
 ### Environment Variables
 
 ```bash
-SEED_STORY_MODE=web          # 'web' or 'cli'
-CUDA_VISIBLE_DEVICES=0       # GPU device selection
-GRADIO_SERVER_NAME=0.0.0.0   # Web interface host
-GRADIO_SERVER_PORT=7860      # Web interface port
+# Run on different port
+docker run -p 8080:7860 -e GRADIO_SERVER_PORT=7860 seed-story
+
+# Use specific GPU
+docker run --gpus '"device=1"' seed-story
 ```
 
-### Generation Parameters
-
-- **Story Length**: 3-25 sequences (default: 10)
-- **Max Tokens**: 100-1000 per segment (default: 500)
-- **Inference Steps**: 20-100 for image generation (default: 50)
-- **Temperature**: 0.1-1.5 for text creativity (default: 0.7)
-- **Guidance Scale**: 1.0-15.0 for image fidelity (default: 7.5)
-
-## 📁 Data Persistence
+### Storage Options
 
 ```bash
-# Mount data directory for persistence
-docker run --gpus all -p 7860:7860 \
-  -v $(pwd)/models:/app/pretrained \
-  -v $(pwd)/output:/app/data/output \
-  seed-story
+# Mount custom model directory
+docker run -v "/your/models/path:/app/models" seed-story
+
+# Mount output directory for saving comics
+docker run -v "./comics:/app/output" seed-story
 ```
 
-## 🔧 Development
+## 🔧 Troubleshooting
 
-### Custom Configuration
+### Common Issues
+
+**Container won't start:**
 
 ```bash
-# Mount custom configs
-docker run --gpus all -p 7860:7860 \
-  -v $(pwd)/custom-configs:/app/configs \
-  seed-story
+# Check if container exists
+docker ps -a
+
+# View logs
+docker logs seed-story-container
+
+# Remove and rebuild
+docker rm seed-story-container
+docker build -t seed-story .
 ```
 
-### Debugging
+**Out of GPU memory:**
 
-```bash
-# Debug mode with verbose logging
-docker run --gpus all -e SEED_STORY_MODE=cli -it seed-story bash
+- Reduce number of panels to 1-3
+- Close other GPU applications
+- Use smaller batch sizes
 
-# Check model status
-python3 model_downloader.py --list
+**Models not downloading:**
 
-# Test generation
-python3 src/inference/gen_george.py
-```
+- Check internet connection
+- Ensure sufficient disk space (20GB+)
+- Verify volume mount paths
+
+### Getting Help
+
+1. **Check Logs**: `docker logs seed-story-container`
+2. **System Status**: Available in web interface
+3. **Issues**: Report at [GitHub Issues](https://github.com/Ricky-G/docker-ai-models/issues)
 
 ## 📊 Performance
 
 ### Recommended Hardware
 
-| Configuration | GPU | VRAM | RAM | Story Length |
-|---------------|-----|------|-----|--------------|
-| **Minimum** | RTX 3080 | 16GB | 16GB | 5 sequences |
-| **Recommended** | RTX 4090 | 24GB | 32GB | 10 sequences |
-| **Optimal** | A100 | 40GB+ | 64GB+ | 25 sequences |
+| Configuration | GPU | VRAM | Generation Time |
+|---------------|-----|------|-----------------|
+| **Minimum** | RTX 3060 | 8GB | ~5 min/story |
+| **Recommended** | RTX 3080 | 16GB | ~3 min/story |
+| **Optimal** | RTX 4090 | 24GB | ~1 min/story |
 
-### Generation Times
+### Speed Tips
 
-- **Text Generation**: ~30-60 seconds per segment
-- **Image Generation**: ~15-30 seconds per image (50 steps)
-- **Total Story (10 segments)**: ~8-15 minutes
+- Use fewer panels for faster generation
+- Keep other GPU applications closed
+- Use SSD storage for models
+- Ensure good cooling for sustained generation
 
-## 🛠️ Troubleshooting
+## 🛠️ Development
 
-### Common Issues
+### File Structure
 
-#### Out of Memory
+```
+seed-story/
+├── dockerfile          # Container definition
+├── startup.sh         # Container startup script
+├── minimal_gradio.py   # Main web interface
+├── simple_comic_generator.py  # Fallback generator
+├── model_downloader.py # Model management
+├── requirements.txt    # Python dependencies
+└── README.md          # This file
+```
+
+### Custom Modifications
 
 ```bash
-# Reduce story length and image steps
-# Use smaller batch sizes
-# Close other GPU applications
+# Run in development mode
+docker run -it --gpus all -v $(pwd):/app/dev seed-story bash
+
+# Test individual components
+python minimal_gradio.py
+python model_downloader.py --list
 ```
 
-#### Model Download Fails
+## 📚 Based On
 
-```bash
-# Check internet connection
-# Ensure sufficient disk space
-# Try manual download:
-docker run --gpus all -e SEED_STORY_MODE=cli seed-story \
-  python3 model_downloader.py --force
-```
+This Docker implementation is built on:
 
-#### Permission Errors
-
-```bash
-# Fix data directory permissions
-sudo chown -R $USER:$USER ./data
-```
-
-### Getting Help
-
-1. **Check Logs**: Use `docker logs <container-id>` for error details
-2. **System Info**: Access system status in web interface
-3. **GitHub Issues**: Report bugs at [SEED-Story GitHub](https://github.com/TencentARC/SEED-Story/issues)
-
-## 📚 Technical Details
-
-### Architecture
-
-SEED-Story uses a three-stage training approach:
-
-1. **Visual Tokenization**: SDXL-based de-tokenizer for image reconstruction
-2. **Instruction Tuning**: MLLM training with multimodal sequences
-3. **De-tokenizer Adaptation**: Fine-tuning for character/style consistency
-
-### Model Components
-
-- **Visual Encoder**: Qwen-VL for image understanding
-- **Language Model**: Llama-2-7B for text generation
-- **Image Generator**: Stable Diffusion XL for image synthesis
-- **Adapter**: Custom adapter for multimodal alignment
-
-## 📖 Citation
-
-```bibtex
-@article{yang2024seedstory,
-    title={SEED-Story: Multimodal Long Story Generation with Large Language Model},
-    author={Shuai Yang and Yuying Ge and Yang Li and Yukang Chen and Yixiao Ge and Ying Shan and Yingcong Chen},
-    year={2024},
-    journal={arXiv preprint arXiv:2407.08683},
-    url={https://arxiv.org/abs/2407.08683}
-}
-```
+- **[SEED-Story](https://github.com/TencentARC/SEED-Story)** by TencentARC
+- **[Stable Diffusion XL](https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0)** for image generation
+- **[Llama-2](https://huggingface.co/meta-llama/Llama-2-7b-hf)** for text generation
+- **[Gradio](https://gradio.app/)** for the web interface
 
 ## 📄 License
 
-This project follows the Apache License Version 2.0, consistent with the original SEED-Story implementation. See the original repository for detailed license information.
+This project follows the licenses of its component models. See original repositories for detailed license information.
 
 ---
 
-## 🔗 Related Projects
-
-- **[YuE Music Generation](../yue/)** - AI music composition and generation
-- **[SEED-X Multimodal](https://github.com/AILab-CVC/SEED-X)** - Foundation for SEED-Story
-- **[StoryStream Dataset](https://huggingface.co/datasets/TencentARC/StoryStream)** - Training dataset
-
-**Part of the Docker AI Models Collection** - Production-ready containers for cutting-edge AI models.
+**Part of the [Docker AI Models Collection](https://github.com/Ricky-G/docker-ai-models)** - Production-ready containers for cutting-edge AI models.

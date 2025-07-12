@@ -1,0 +1,601 @@
+[
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "gradio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "gradio",
+        "description": "gradio",
+        "detail": "gradio",
+        "documentation": {}
+    },
+    {
+        "label": "torch",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "torch",
+        "description": "torch",
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "sys",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "sys",
+        "description": "sys",
+        "detail": "sys",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
+        "isExtraImport": true,
+        "detail": "pathlib",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageDraw",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageFont",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageDraw",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageFont",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "random",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "random",
+        "description": "random",
+        "detail": "random",
+        "documentation": {}
+    },
+    {
+        "label": "subprocess",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "subprocess",
+        "description": "subprocess",
+        "detail": "subprocess",
+        "documentation": {}
+    },
+    {
+        "label": "snapshot_download",
+        "importPath": "huggingface_hub",
+        "description": "huggingface_hub",
+        "isExtraImport": true,
+        "detail": "huggingface_hub",
+        "documentation": {}
+    },
+    {
+        "label": "hf_hub_download",
+        "importPath": "huggingface_hub",
+        "description": "huggingface_hub",
+        "isExtraImport": true,
+        "detail": "huggingface_hub",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "shutil",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "shutil",
+        "description": "shutil",
+        "detail": "shutil",
+        "documentation": {}
+    },
+    {
+        "label": "glob",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "glob",
+        "description": "glob",
+        "detail": "glob",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "queue",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "queue",
+        "description": "queue",
+        "detail": "queue",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "signal",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "signal",
+        "description": "signal",
+        "detail": "signal",
+        "documentation": {}
+    },
+    {
+        "label": "check_models",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def check_models():\n    \"\"\"Check if models are available\"\"\"\n    models_dir = Path(os.environ.get('SEED_STORY_MODELS_DIR', '/app/pretrained'))\n    print(f\"🟢 STEP 13: Models directory: {models_dir}\")\n    models_status = {}\n    required_models = [\n        \"stable-diffusion-xl-base-1.0\",\n        \"Llama-2-7b-hf\", \n        \"Qwen-VL-Chat\"\n    ]",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "load_diffusion_model",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def load_diffusion_model():\n    \"\"\"Load Stable Diffusion XL for image generation\"\"\"\n    try:\n        print(\"🟢 Loading Stable Diffusion XL...\")\n        from diffusers import StableDiffusionXLPipeline\n        models_dir = Path(os.environ.get('SEED_STORY_MODELS_DIR', '/app/pretrained'))\n        sdxl_path = models_dir / \"stable-diffusion-xl-base-1.0\"\n        if sdxl_path.exists():\n            pipe = StableDiffusionXLPipeline.from_pretrained(\n                str(sdxl_path),",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "create_placeholder_image",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def create_placeholder_image(text, panel_num):\n    \"\"\"Create a placeholder comic panel image with text\"\"\"\n    try:\n        # Create a comic-style image\n        img_width, img_height = 512, 512\n        img = Image.new('RGB', (img_width, img_height), color='lightblue')\n        draw = ImageDraw.Draw(img)\n        # Try to load a font, fall back to default if not available\n        try:\n            font = ImageFont.truetype(\"/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf\", 24)",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "generate_image_with_diffusion",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def generate_image_with_diffusion(prompt, panel_num):\n    \"\"\"Generate an image using Stable Diffusion XL\"\"\"\n    global diffusion_pipe\n    try:\n        if diffusion_pipe is None:\n            print(\"🔄 Loading diffusion model...\")\n            diffusion_pipe = load_diffusion_model()\n        if diffusion_pipe is not None:\n            print(f\"🎨 Generating image for panel {panel_num}...\")\n            # Enhance prompt for comic-style generation",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "generate_story",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def generate_story(prompt, num_panels):\n    \"\"\"Generate a comic story with images based on the prompt\"\"\"\n    print(f\"🟢 STEP 20: generate_story called with prompt='{prompt}', panels={num_panels}\")\n    # Check if models are available\n    models_dir = Path(os.environ.get('SEED_STORY_MODELS_DIR', '/app/pretrained'))\n    print(f\"🟢 STEP 20a: Models directory: {models_dir}\")\n    try:\n        print(\"🎬 STEP 20b: Starting story generation with images...\")\n        # Story templates based on prompt themes\n        story_templates = {",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "create_interface",
+        "kind": 2,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "def create_interface():\n    \"\"\"Create the SEED-Story interface with image generation\"\"\"\n    print(\"🟢 STEP 17: Creating SEED-Story interface with comic generation...\")\n    # Check models first\n    models_status = check_models()\n    # Create interface with comic generation capabilities\n    with gr.Blocks(title=\"SEED-Story Comic Generator\") as interface:\n        gr.Markdown(\"# 🎬 SEED-Story Comic Generator\")\n        gr.Markdown(\"Generate comic stories with images!\")\n        # Model status display",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"]",
+        "kind": 5,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"] = \"False\"\nimport gradio as gr\nimport torch\nimport sys\nfrom pathlib import Path\nfrom PIL import Image, ImageDraw, ImageFont\nimport random\nprint(\"🔧 Starting SEED-Story interface with image generation...\")\ndef check_models():\n    \"\"\"Check if models are available\"\"\"",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "diffusion_pipe",
+        "kind": 5,
+        "importPath": "seed-story.minimal_gradio",
+        "description": "seed-story.minimal_gradio",
+        "peekOfCode": "diffusion_pipe = None\ndef create_placeholder_image(text, panel_num):\n    \"\"\"Create a placeholder comic panel image with text\"\"\"\n    try:\n        # Create a comic-style image\n        img_width, img_height = 512, 512\n        img = Image.new('RGB', (img_width, img_height), color='lightblue')\n        draw = ImageDraw.Draw(img)\n        # Try to load a font, fall back to default if not available\n        try:",
+        "detail": "seed-story.minimal_gradio",
+        "documentation": {}
+    },
+    {
+        "label": "ModelDownloader",
+        "kind": 6,
+        "importPath": "seed-story.model_downloader",
+        "description": "seed-story.model_downloader",
+        "peekOfCode": "class ModelDownloader:\n    def __init__(self):\n        # Use mounted volume if available, otherwise use default container directory\n        models_dir = os.environ.get('SEED_STORY_MODELS_DIR', '/app/pretrained')\n        self.pretrained_dir = Path(models_dir)\n        self.pretrained_dir.mkdir(exist_ok=True)\n        print(f\"📁 Models will be downloaded to: {self.pretrained_dir}\")\n        # Required models configuration with optimized file patterns\n        self.models = {\n            \"stable-diffusion-xl-base-1.0\": {",
+        "detail": "seed-story.model_downloader",
+        "documentation": {}
+    },
+    {
+        "label": "create_comic_panel",
+        "kind": 2,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "def create_comic_panel(text, panel_num, width=512, height=512):\n    \"\"\"Create a comic-style panel with text\"\"\"\n    # Create base image with comic book colors\n    colors = [\n        (255, 230, 200),  # Light peach\n        (200, 230, 255),  # Light blue\n        (255, 200, 230),  # Light pink\n        (230, 255, 200),  # Light green\n        (255, 255, 200),  # Light yellow\n    ]",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "try_load_diffusion_model",
+        "kind": 2,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "def try_load_diffusion_model():\n    \"\"\"Try to load Stable Diffusion model if available\"\"\"\n    global diffusion_pipe\n    try:\n        from diffusers import DiffusionPipeline\n        models_dir = Path(os.environ.get('SEED_STORY_MODELS_DIR', '/app/pretrained'))\n        sdxl_path = models_dir / \"stable-diffusion-xl-base-1.0\"\n        if sdxl_path.exists():\n            print(\"🔄 Loading Stable Diffusion XL...\")\n            diffusion_pipe = DiffusionPipeline.from_pretrained(",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "generate_panel_with_ai",
+        "kind": 2,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "def generate_panel_with_ai(prompt, panel_num):\n    \"\"\"Generate panel using AI if available, otherwise use fallback\"\"\"\n    global diffusion_pipe\n    if diffusion_pipe is not None:\n        try:\n            print(f\"🤖 Generating AI image for panel {panel_num}...\")\n            # Comic-style prompt\n            enhanced_prompt = f\"comic book panel, colorful illustration: {prompt}\"\n            image = diffusion_pipe(\n                prompt=enhanced_prompt,",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "generate_comic_story",
+        "kind": 2,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "def generate_comic_story(prompt, num_panels, use_ai=True):\n    \"\"\"Generate a complete comic story\"\"\"\n    print(f\"📚 Generating {num_panels}-panel comic story: '{prompt}'\")\n    # Try to load AI model if requested and not already loaded\n    if use_ai and diffusion_pipe is None:\n        try_load_diffusion_model()\n    # Generate story based on prompt\n    story_elements = []\n    # Parse prompt for story elements\n    if \"cat\" in prompt.lower():",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "create_interface",
+        "kind": 2,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "def create_interface():\n    \"\"\"Create Gradio interface\"\"\"\n    with gr.Blocks(title=\"Comic Story Generator\", theme=gr.themes.Soft()) as interface:\n        gr.Markdown(\"# 🎨 Comic Story Generator\")\n        gr.Markdown(\"Create amazing comic stories with AI or classic comic style!\")\n        with gr.Row():\n            with gr.Column(scale=1):\n                prompt_input = gr.Textbox(\n                    label=\"Story Idea\",\n                    placeholder=\"Enter your story idea...\",",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"]",
+        "kind": 5,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"] = \"False\"\nimport gradio as gr\nimport torch\nfrom pathlib import Path\nfrom PIL import Image, ImageDraw, ImageFont\nimport random\nimport numpy as np\nprint(\"🎨 Starting Simple Comic Generator...\")\n# Global variable for diffusion pipeline\ndiffusion_pipe = None",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "diffusion_pipe",
+        "kind": 5,
+        "importPath": "seed-story.simple_comic_generator",
+        "description": "seed-story.simple_comic_generator",
+        "peekOfCode": "diffusion_pipe = None\ndef create_comic_panel(text, panel_num, width=512, height=512):\n    \"\"\"Create a comic-style panel with text\"\"\"\n    # Create base image with comic book colors\n    colors = [\n        (255, 230, 200),  # Light peach\n        (200, 230, 255),  # Light blue\n        (255, 200, 230),  # Light pink\n        (230, 255, 200),  # Light green\n        (255, 255, 200),  # Light yellow",
+        "detail": "seed-story.simple_comic_generator",
+        "documentation": {}
+    },
+    {
+        "label": "verify_setup",
+        "kind": 2,
+        "importPath": "seed-story.verify_setup",
+        "description": "seed-story.verify_setup",
+        "peekOfCode": "def verify_setup():\n    \"\"\"Verify the SEED-Story setup\"\"\"\n    print(\"🔍 Verifying SEED-Story Docker Setup...\")\n    print(\"=\" * 50)\n    issues = []\n    warnings = []\n    # 1. Check Python version\n    print(f\"✓ Python version: {sys.version}\")\n    # 2. Check critical imports\n    print(\"\\n📦 Checking dependencies...\")",
+        "detail": "seed-story.verify_setup",
+        "documentation": {}
+    },
+    {
+        "label": "log_reader",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def log_reader(process):\n    \"\"\"Read process output and put it in the log queue.\"\"\"\n    try:\n        for line in iter(process.stdout.readline, b''):\n            if line:\n                log_queue.put(line.decode('utf-8', errors='ignore'))\n        for line in iter(process.stderr.readline, b''):\n            if line:\n                log_queue.put(line.decode('utf-8', errors='ignore'))\n    except Exception as e:",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "stop_generation",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def stop_generation():\n    \"\"\"Stop the current generation process.\"\"\"\n    global generation_process\n    with process_lock:\n        if generation_process and generation_process.poll() is None:\n            try:\n                generation_process.terminate()\n                generation_process.wait(timeout=5)\n            except subprocess.TimeoutExpired:\n                generation_process.kill()",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "generate_music",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def generate_music(\n    stage1_model,\n    stage2_model,\n    genre_text,\n    lyrics_text,\n    max_new_tokens,\n    repetition_penalty,\n    stage2_batch_size,\n    run_n_segments,\n    seed,",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "get_generation_logs",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def get_generation_logs():\n    \"\"\"Get the latest logs from the generation process.\"\"\"\n    logs = \"\"\n    while not log_queue.empty():\n        try:\n            logs += log_queue.get_nowait()\n        except queue.Empty:\n            break\n    return logs\ndef list_output_files():",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "list_output_files",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def list_output_files():\n    \"\"\"List generated output files.\"\"\"\n    output_path = Path(OUTPUT_DIR)\n    if not output_path.exists():\n        return []\n    # Look for audio files\n    audio_files = []\n    for ext in ['*.wav', '*.mp3', '*.flac']:\n        audio_files.extend(output_path.glob(f\"**/{ext}\"))\n    # Sort by modification time (newest first)",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "load_example_prompts",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def load_example_prompts():\n    \"\"\"Load example prompts from the YuE repository.\"\"\"\n    examples = {}\n    # Try to load genre examples\n    genre_path = Path(YUE_PATH) / \"prompt_egs\" / \"genre.txt\"\n    if genre_path.exists():\n        with open(genre_path, 'r') as f:\n            examples['genre'] = f.read().strip()\n    else:\n        examples['genre'] = EXAMPLE_GENRE",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "create_interface",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def create_interface():\n    \"\"\"Create the Gradio interface.\"\"\"\n    # Load examples\n    examples = load_example_prompts()\n    with gr.Blocks(\n        title=\"YuE Music Generation\",\n        theme=gr.themes.Soft(),\n        css=\"\"\"\n        .container { max-width: 1200px; margin: auto; }\n        .header { text-align: center; padding: 20px; }",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "generation_process",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "generation_process = None\nlog_queue = queue.Queue()\nprocess_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "log_queue",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "log_queue = queue.Queue()\nprocess_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "process_lock",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "process_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "YUE_PATH",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "YUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "OUTPUT_DIR",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "OUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "CACHE_DIR",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "CACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_STAGE1_MODEL",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_STAGE2_MODEL",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_CUDA_IDX",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_MAX_NEW_TOKENS",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_REPETITION_PENALTY",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_STAGE2_BATCH_SIZE",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_RUN_N_SEGMENTS",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "DEFAULT_SEED",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "DEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "EXAMPLE_GENRE",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "EXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers\nFighting through the dark\nWe are believers",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "EXAMPLE_LYRICS",
+        "kind": 5,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "EXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers\nFighting through the dark\nWe are believers\nFollowing our heart\"\"\"",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    }
+]

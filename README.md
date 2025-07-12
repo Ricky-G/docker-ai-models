@@ -22,6 +22,10 @@ Current structure:
 │   ├── dockerfile-gpu-poor # Lightweight build (8GB+ VRAM)
 │   ├── startup.sh          # Standard launch script
 │   └── startup-gpu-poor.sh # GPU-constrained launch script
+├── seed-story/             # SEED-Story: Multimodal story generation
+│   ├── dockerfile          # GPU build (16GB+ VRAM)
+│   ├── startup.sh          # Launch script with web/CLI modes
+│   └── gradio_interface.py # Advanced web interface
 ├── wan/                    # Wan2GP: Video-to-audio generation
 │   ├── dockerfile-gpu-poor # GPU-efficient build
 │   └── startup-gpu-poor.sh # Launch script
@@ -35,6 +39,7 @@ Current structure:
 |-------|------|----------|-----------|---------------|
 | 🎵 **YuE** | Lyrics-to-Song Generation | 24GB+ VRAM | Web UI + CLI | [Setup Guide](yue/README.md) |
 | 🎶 **YuE-GP** | Music Generation (Optimized) | 8GB+ VRAM | Web UI | [Setup Guide](yue/README-GPU-POOR.md) |
+| 📚 **SEED-Story** | Multimodal Story Generation | 16GB+ VRAM | Web UI + CLI | [Setup Guide](seed-story/README.md) |
 | 🎬 **Wan2GP** | Video-to-Audio Synthesis | 8GB+ VRAM | Web UI | *Coming Soon* |
 
 ---
@@ -47,7 +52,6 @@ Actively working on containerizing these cutting-edge AI models:
 |-------|------|-------------|------------|
 | 📸 **PhotoMaker** | Image Generation | Customizing realistic human photos via stochastic identity mixing | [TencentARC/PhotoMaker](https://github.com/TencentARC/PhotoMaker) |
 | 🗣️ **Fantasy Talking** | Video Generation | High-quality talking face generation with identity preservation | [Fantasy-AMAP/fantasy-talking](https://github.com/Fantasy-AMAP/fantasy-talking) |
-| 📚 **SEED-Story** | Multimodal Storytelling | Generate rich, multimodal stories with consistent characters and plots | [TencentARC/SEED-Story](https://github.com/TencentARC/SEED-Story) |
 
 *Watch this space – these containerized models will be available soon with the same zero-setup experience!*
 
