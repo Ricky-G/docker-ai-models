@@ -1,0 +1,71 @@
+# SEED-Story Docker Image for Multimodal Story Generation
+# Based on TencentARC/SEED-Story with Gradio web interface
+# https://github.com/TencentARC/SEED-Story
+
+# Use NVIDIA PyTorch base image with CUDA support
+FROM nvcr.io/nvidia/pytorch:23.10-py3
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    wget \
+    curl \
+    unzip \
+    ffmpeg \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
+    libglib2.0-0 \
+    libgl1-mesa-glx \
+    libgomp1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables
+ENV PYTHONPATH=/app:$PYTHONPATH
+ENV TORCH_HOME=/app/models/torch
+ENV HF_HOME=/app/models/huggingface
+ENV SEED_STORY_MODE=web
+ENV GRADIO_SERVER_NAME=0.0.0.0
+ENV GRADIO_SERVER_PORT=7860
+
+# Clone SEED-Story repository
+RUN git clone https://github.com/TencentARC/SEED-Story.git /tmp/seed-story && \
+    cp -r /tmp/seed-story/* /app/ && \
+    rm -rf /tmp/seed-story
+
+# Install Python dependencies
+COPY requirements-docker.txt .
+RUN pip install --no-cache-dir -r requirements-docker.txt
+
+# Install additional dependencies for web interface
+RUN pip install --no-cache-dir \
+    gradio==4.44.0 \
+    gradio-client==0.18.0 \
+    spaces==0.28.3 \
+    psutil==5.9.8 \
+    pympler==0.9
+
+# Create directories for models and data
+RUN mkdir -p /app/pretrained \
+    /app/models/torch \
+    /app/models/huggingface \
+    /app/data/input \
+    /app/data/output \
+    /app/data/temp
+
+# Copy startup script and Gradio interface
+COPY startup.sh /app/startup.sh
+COPY gradio_interface.py /app/gradio_interface.py
+COPY model_downloader.py /app/model_downloader.py
+
+# Make startup script executable
+RUN chmod +x /app/startup.sh
+
+# Expose Gradio port
+EXPOSE 7860
+
+# Set the startup script as entrypoint
+ENTRYPOINT ["/app/startup.sh"]
