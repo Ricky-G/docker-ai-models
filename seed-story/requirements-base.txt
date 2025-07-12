@@ -1,6 +1,6 @@
 # Base/Stable Requirements - These rarely change and should be cached
 # Core ML/AI packages
-torch==2.1.2
+torch==2.7.1
 torchvision==0.16.2
 torchaudio==2.1.2
 triton==2.1.0
