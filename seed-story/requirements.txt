@@ -60,7 +60,7 @@ hjson==3.1.0
 # Monitoring and logging
 wandb==0.16.4
 tensorboard==2.14.0
-sentry-sdk==1.43.0
+sentry-sdk==1.45.1
 
 # Additional utilities
 regex==2023.12.25
