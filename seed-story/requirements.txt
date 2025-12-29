@@ -48,7 +48,7 @@ tqdm==4.66.2
 # Web and API
 Flask==3.0.2
 requests==2.31.0
-Werkzeug==3.0.1
+Werkzeug==3.1.4
 
 # File handling
 braceexpand==0.1.7
