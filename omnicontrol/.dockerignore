@@ -1,0 +1,63 @@
+# Git and version control
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+*.md
+!README.md
+docs/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Model cache (will be mounted as volume)
+models/*
+cache/*
+
+# Output files
+outputs/*
+*.jpg
+*.png
+*.jpeg
+*.safetensors
+
+# Training and experimental
+train/
+examples/
+notebooks/
+tests/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp

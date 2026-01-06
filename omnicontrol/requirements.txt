@@ -1,0 +1,29 @@
+# Core dependencies for OmniControlGP
+torch>=2.0.0
+torchvision>=0.15.0
+diffusers>=0.30.0
+transformers>=4.40.0
+accelerate>=0.27.0
+peft>=0.10.0
+safetensors>=0.4.0
+
+# Image processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+numpy>=1.24.0
+
+# Web interface
+gradio>=4.0.0
+
+# Memory optimization (DeepBeepMeep's GPU Poor optimization)
+mmgp>=0.1.0
+
+# HuggingFace
+huggingface-hub>=0.20.0
+datasets>=2.16.0
+
+# Additional utilities
+PyYAML>=6.0
+tqdm>=4.66.0
+sentencepiece>=0.1.99
+protobuf>=4.25.0
