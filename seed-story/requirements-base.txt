@@ -1,13 +1,13 @@
 # Base/Stable Requirements - These rarely change and should be cached
 # Core ML/AI packages
-torch==2.1.2
+torch==2.8.0
 torchvision==0.16.2
 torchaudio==2.1.2
 triton==2.1.0
 
 # Computer Vision
 opencv-python-headless==4.9.0.80
-Pillow==10.2.0
+Pillow==10.3.0
 imageio==2.34.0
 scikit-image==0.21.0
 
