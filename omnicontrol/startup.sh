@@ -73,6 +73,11 @@ set_profile() {
     
     echo "    Profile ${OMNI_PROFILE} selected - should generate images in 6-10 seconds"
     echo "    You can override by setting OMNI_PROFILE environment variable (1, 3, 4, or 5)"
+    
+    # Check for MMGP_BUDGETS override (prevents model offload between generations)
+    if [ -n "$MMGP_BUDGETS" ]; then
+        echo "    MMGP_BUDGETS=${MMGP_BUDGETS} (0 = keep model in VRAM, no reload penalty)"
+    fi
 }
 
 # Main execution

@@ -1,588 +1,648 @@
-#!/usr/bin/env python3
 """
-YuE Gradio Web Interface
-A simplified web interface for YuE music generation using Gradio.
-Based on the official YuE implementation with support for both command-line and web modes.
+YuE GPU-Poor Gradio Interface
+RTX 3060 12GB optimized with mmgp Profile 3
 """
-
-import gradio as gr
 import os
-import subprocess
-import tempfile
-import json
-import shutil
-import glob
-from pathlib import Path
-import threading
-import queue
-import time
-import signal
+os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"
+
+import gc
 import sys
+import time
+from datetime import datetime
+import torch
+import gradio as gr
+import numpy as np
+import soundfile as sf
+from pathlib import Path
+from transformers import AutoModelForCausalLM, LogitsProcessor, LogitsProcessorList
+from huggingface_hub import snapshot_download
+from mmgp import offload
+from einops import rearrange
 
-# Global variables
-generation_process = None
-log_queue = queue.Queue()
-process_lock = threading.Lock()
+# Global state
+STATE = {"device": None, "models": {}, "tokenizer": None, "codec": None}
 
-# Configuration
-YUE_PATH = "/app/YuE"
-OUTPUT_DIR = "/app/output"
-CACHE_DIR = "/app/cache"
+def log(msg):
+    """Print message with timestamp"""
+    ts = datetime.now().strftime("%H:%M:%S")
+    print(f"[{ts}] {msg}")
 
-# Default values from environment variables
-DEFAULT_STAGE1_MODEL = os.getenv("YUE_STAGE1_MODEL", "m-a-p/YuE-s1-7B-anneal-en-cot")
-DEFAULT_STAGE2_MODEL = os.getenv("YUE_STAGE2_MODEL", "m-a-p/YuE-s2-1B-general")
-DEFAULT_CUDA_IDX = int(os.getenv("YUE_CUDA_IDX", "0"))
-DEFAULT_MAX_NEW_TOKENS = int(os.getenv("YUE_MAX_NEW_TOKENS", "3000"))
-DEFAULT_REPETITION_PENALTY = float(os.getenv("YUE_REPETITION_PENALTY", "1.1"))
-DEFAULT_STAGE2_BATCH_SIZE = int(os.getenv("YUE_STAGE2_BATCH_SIZE", "4"))
-DEFAULT_RUN_N_SEGMENTS = int(os.getenv("YUE_RUN_N_SEGMENTS", "2"))
-DEFAULT_SEED = int(os.getenv("YUE_SEED", "42"))
+def initialize_models(profile=3):
+    """Initialize YuE models with mmgp optimization"""
+    print("🔧 Initializing YuE models...")
+    
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    STATE["device"] = device
+    
+    # Get HuggingFace token from environment
+    hf_token = os.environ.get("HF_TOKEN", None)
+    
+    # Download xcodec from HuggingFace to local directory
+    print("   Downloading xcodec (first time only)...")
+    xcodec_local = Path("/app/xcodec_mini_infer")
+    if not xcodec_local.exists():
+        snapshot_download(
+            repo_id="m-a-p/xcodec_mini_infer",
+            token=hf_token,
+            local_dir=str(xcodec_local),
+            local_dir_use_symlinks=False
+        )
+    
+    # Download tokenizer and inference code from YuEGP GitHub repo
+    print("   Downloading tokenizer and inference code (first time only)...")
+    inference_dir = Path("/app/YuEGP_inference")
+    if not inference_dir.exists():
+        import subprocess
+        subprocess.run([
+            "git", "clone", "--depth=1", 
+            "https://github.com/deepbeepmeep/YuEGP.git",
+            "/tmp/YuEGP"
+        ], check=True)
+        import shutil
+        # Copy inference directory which has codecmanipulator, mmtokenizer, etc.
+        shutil.copytree("/tmp/YuEGP/inference", inference_dir)
+        shutil.rmtree("/tmp/YuEGP")
+    
+    # Add xcodec and inference to Python path
+    sys.path.insert(0, str(xcodec_local))
+    sys.path.insert(0, str(xcodec_local / "descriptaudiocodec"))
+    sys.path.insert(0, str(inference_dir))
+    
+    # Import xcodec modules after setting up paths
+    from codecmanipulator import CodecManipulator
+    from mmtokenizer import _MMSentencePieceTokenizer
+    from omegaconf import OmegaConf
+    from models.soundstream_hubert_new import SoundStream
+    from vocoder import build_codec_model
+    
+    # Load tokenizer
+    tokenizer_path = inference_dir / "mm_tokenizer_v0.2_hf" / "tokenizer.model"
+    STATE["tokenizer"] = _MMSentencePieceTokenizer(str(tokenizer_path))
+    
+    # Load Stage 1 model (lyrics to semantic tokens)
+    print("   Loading Stage 1 model (7B)...")
+    model_s1 = AutoModelForCausalLM.from_pretrained(
+        "m-a-p/YuE-s1-7B-anneal-en-cot",
+        torch_dtype=torch.bfloat16,
+        attn_implementation="sdpa",  # Fallback to SDPA if flash-attn unavailable
+        token=hf_token,
+    )
+    model_s1.to("cpu")
+    model_s1.eval()
+    model_s1._validate_model_kwargs = lambda x: None  # Disable validation
+    
+    # Load Stage 2 model (semantic to audio tokens)
+    print("   Loading Stage 2 model (1B)...")
+    model_s2 = AutoModelForCausalLM.from_pretrained(
+        "m-a-p/YuE-s2-1B-general",
+        torch_dtype=torch.float16,
+        attn_implementation="sdpa",
+        token=hf_token,
+    )
+    model_s2.to("cpu")
+    model_s2.eval()
+    model_s2._validate_model_kwargs = lambda x: None
+    
+    STATE["models"] = {"stage1": model_s1, "stage2": model_s2}
+    
+    # Apply mmgp Profile 3 optimization
+    print(f"   Applying mmgp Profile {profile} (12GB VRAM + 8-bit quantization)...")
+    pipe = {"transformer": model_s1, "stage2": model_s2}
+    quantize = profile >= 3  # Profiles 3-5 use quantization
+    offload.profile(pipe, profile_no=profile, quantizeTransformer=quantize, verboseLevel=1)
+    
+    # Load xcodec for audio encoding/decoding
+    print("   Loading xcodec...")
+    xcodec_config = xcodec_local / "final_ckpt" / "config.yaml"
+    xcodec_ckpt = xcodec_local / "final_ckpt" / "ckpt_00360000.pth"
+    
+    model_config = OmegaConf.load(str(xcodec_config))
+    codec_model = eval(model_config.generator.name)(**model_config.generator.config).to(device)
+    checkpoint = torch.load(str(xcodec_ckpt), map_location="cpu")
+    codec_model.load_state_dict(checkpoint["codec_model"])
+    codec_model.eval()
+    STATE["codec"] = codec_model
+    
+    # Codec manipulators
+    STATE["codec_tool"] = CodecManipulator("xcodec", 0, 1)
+    STATE["codec_tool_s2"] = CodecManipulator("xcodec", 0, 8)
+    
+    # Vocoder for upsampling
+    vocal_decoder = xcodec_local / "decoders" / "decoder_131000.pth"
+    inst_decoder = xcodec_local / "decoders" / "decoder_151000.pth"
+    vocoder_config = xcodec_local / "decoders" / "config.yaml"
+    STATE["vocoder"] = build_codec_model(str(vocoder_config), str(vocal_decoder), str(inst_decoder))
+    
+    print("✅ Models loaded and optimized")
 
-# Example prompts
-EXAMPLE_GENRE = "inspiring female uplifting pop airy vocal electronic bright vocal"
-EXAMPLE_LYRICS = """[verse]
-Running in the night
-My heart beats like a drum
-I'm searching for the light
-In this city so cold
 
-[chorus]
-We are the dreamers
-Fighting through the dark
-We are believers
-Following our heart"""
+class BlockTokenRangeProcessor(LogitsProcessor):
+    def __init__(self, start_id, end_id):
+        self.blocked = list(range(start_id, end_id))
+    
+    def __call__(self, input_ids, scores):
+        scores[:, self.blocked] = -float("inf")
+        return scores
 
-def log_reader(process):
-    """Read process output and put it in the log queue."""
-    try:
-        for line in iter(process.stdout.readline, b''):
-            if line:
-                log_queue.put(line.decode('utf-8', errors='ignore'))
-        for line in iter(process.stderr.readline, b''):
-            if line:
-                log_queue.put(line.decode('utf-8', errors='ignore'))
-    except Exception as e:
-        log_queue.put(f"Log reader error: {str(e)}\n")
 
-def stop_generation():
-    """Stop the current generation process."""
-    global generation_process
-    with process_lock:
-        if generation_process and generation_process.poll() is None:
-            try:
-                generation_process.terminate()
-                generation_process.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                generation_process.kill()
-                generation_process.wait()
-            generation_process = None
-            return "Generation stopped successfully."
+def split_lyrics(lyrics):
+    """Split lyrics into sections"""
+    sections = []
+    current = []
+    for line in lyrics.strip().split("\n"):
+        if line.strip().startswith("[") and current:
+            sections.append("\n".join(current))
+            current = [line]
         else:
-            return "No active generation process to stop."
+            current.append(line)
+    if current:
+        sections.append("\n".join(current))
+    return sections
 
-def generate_music(
-    stage1_model,
-    stage2_model,
-    genre_text,
-    lyrics_text,
-    max_new_tokens,
-    repetition_penalty,
-    stage2_batch_size,
-    run_n_segments,
-    seed,
-    use_audio_prompt,
-    audio_prompt_file,
-    prompt_start_time,
-    prompt_end_time,
-    use_dual_tracks_prompt,
-    vocal_track_file,
-    instrumental_track_file,
-    cuda_idx,
-    keep_intermediate,
-    progress=gr.Progress()
-):
-    """Generate music using YuE with the provided parameters."""
-    global generation_process
+
+def generate_song(genres, lyrics, num_segments=2, seed=42):
+    """Generate song from lyrics and genre tags"""
+    if not STATE["models"]:
+        return "⚠️ Models not loaded. Please wait for initialization.", None, None
     
-    with process_lock:
-        if generation_process and generation_process.poll() is None:
-            return "Another generation is already running. Please stop it first.", None, gr.Button(interactive=True), gr.Button(interactive=False)
+    start_time = time.time()
+    log(f"🎵 Generating song (seed={seed}, segments={num_segments})...")
+    torch.manual_seed(seed)
+    np.random.seed(seed)
     
-    try:
-        progress(0.1, desc="Preparing generation...")
+    # Clear CUDA cache to ensure clean state for each run
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+    
+    mmtokenizer = STATE["tokenizer"]
+    model_s1 = STATE["models"]["stage1"]
+    model_s2 = STATE["models"]["stage2"]
+    device = STATE["device"]
+    codec_tool = STATE["codec_tool"]
+    
+    # Stage 1: Lyrics to semantic tokens
+    stage1_start = time.time()
+    log("   Stage 1: Lyrics → Semantic tokens...")
+    
+    # Force model to GPU before starting (mmgp may have it offloaded to CPU)
+    # This ensures logits processors work correctly on the first segment
+    model_device = next(model_s1.parameters()).device
+    if model_device != device:
+        log(f"   Moving Stage 1 model from {model_device} to {device}...")
+        model_s1.to(device)
+        torch.cuda.empty_cache()
+    
+    lyrics_sections = split_lyrics(lyrics)
+    full_lyrics = "\n".join(lyrics_sections)
+    
+    prompt_texts = [f"Generate music from the given lyrics segment by segment.\n[Genre] {genres}\n{full_lyrics}"]
+    prompt_texts += lyrics_sections
+    
+    # Special tokens
+    start_of_segment = mmtokenizer.tokenize('[start_of_segment]')
+    end_of_segment = mmtokenizer.tokenize('[end_of_segment]')
+    
+    raw_output = None
+    run_segments = min(num_segments + 1, len(prompt_texts))
+    
+    for i in range(run_segments):
+        section_text = prompt_texts[i].replace('[start_of_segment]', '').replace('[end_of_segment]', '')
         
-        # Create temporary files for genre and lyrics
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
-            f.write(genre_text)
-            genre_file = f.name
+        if i == 0:
+            # First iteration - just the header
+            head_id = mmtokenizer.tokenize(section_text)
+            continue
         
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.txt', delete=False) as f:
-            f.write(lyrics_text)
-            lyrics_file = f.name
+        if i == 1:
+            # First segment
+            prompt_ids = head_id + start_of_segment + mmtokenizer.tokenize(section_text) + [mmtokenizer.soa] + codec_tool.sep_ids
+        else:
+            # Subsequent segments
+            prompt_ids = end_of_segment + start_of_segment + mmtokenizer.tokenize(section_text) + [mmtokenizer.soa] + codec_tool.sep_ids
         
-        # Build command
-        cmd = [
-            "conda", "run", "-n", "yue", "python", "-u", 
-            os.path.join(YUE_PATH, "inference", "infer.py"),
-            "--stage1_model", stage1_model,
-            "--stage2_model", stage2_model,
-            "--genre_txt_path", genre_file,
-            "--lyrics_txt_path", lyrics_file,
-            "--max_new_tokens", str(max_new_tokens),
-            "--repetition_penalty", str(repetition_penalty),
-            "--stage2_batch_size", str(stage2_batch_size),
-            "--run_n_segments", str(run_n_segments),
-            "--cuda_idx", str(cuda_idx),
-            "--seed", str(seed),
-            "--output_dir", OUTPUT_DIR
-        ]
+        # Tensors should be on CUDA for model.generate() to work properly
+        prompt_ids = torch.as_tensor(prompt_ids).unsqueeze(0).to(device)
+        input_ids = torch.cat([raw_output, prompt_ids], dim=1) if raw_output is not None else prompt_ids
         
-        if keep_intermediate:
-            cmd.append("--keep_intermediate")
+        # DEBUG: Print device info
+        log(f"   DEBUG: device={device}, input_ids.device={input_ids.device}")
+        log(f"   DEBUG: model device check - next(model_s1.parameters()).device={next(model_s1.parameters()).device}")
         
-        # Handle audio prompts
-        if use_audio_prompt and audio_prompt_file:
-            cmd.extend(["--audio_prompt_path", audio_prompt_file.name])
-            cmd.extend(["--prompt_start_time", str(prompt_start_time)])
-            cmd.extend(["--prompt_end_time", str(prompt_end_time)])
+        # Limit context length
+        max_context = 16384 - 3000 - 1
+        if input_ids.shape[-1] > max_context:
+            log(f"   Segment {i}: Using last {max_context} tokens (context overflow)")
+            input_ids = input_ids[:, -max_context:]
         
-        if use_dual_tracks_prompt and vocal_track_file and instrumental_track_file:
-            cmd.extend(["--vocal_track_prompt_path", vocal_track_file.name])
-            cmd.extend(["--instrumental_track_prompt_path", instrumental_track_file.name])
+        segment_start = time.time()
+        log(f"   DEBUG: Starting generate for segment {i}...")
+        with torch.no_grad():
+            raw_output = model_s1.generate(
+                input_ids,
+                max_new_tokens=3000,
+                min_new_tokens=100,
+                do_sample=True,
+                top_p=0.93,
+                temperature=1.0,
+                repetition_penalty=1.2,
+                eos_token_id=mmtokenizer.eoa,
+                pad_token_id=mmtokenizer.eoa,
+                logits_processor=LogitsProcessorList([
+                    BlockTokenRangeProcessor(0, 32002),
+                    BlockTokenRangeProcessor(32016, 32017)  # Fixed: was 32016, 32016
+                ]),
+            )
+        segment_time = time.time() - segment_start
+        log(f"   DEBUG: Generate completed. raw_output shape={raw_output.shape}, device={raw_output.device} ({segment_time:.1f}s)")
+    
+    # Extract vocals and instrumentals
+    ids = raw_output[0].cpu().numpy()
+    soa_idx = np.where(ids == mmtokenizer.soa)[0]
+    eoa_idx = np.where(ids == mmtokenizer.eoa)[0]
+    
+    vocals, instrumentals = [], []
+    
+    for i in range(len(soa_idx)):
+        start = soa_idx[i] + 1
+        end = eoa_idx[i] if i < len(eoa_idx) else len(ids)
+        codec_ids = ids[start:end]
         
-        progress(0.2, desc="Starting generation process...")
+        if len(codec_ids) == 0:
+            continue
+            
+        # Skip separator token if present
+        if codec_ids[0] == 32016:
+            codec_ids = codec_ids[1:]
         
-        # Start process
-        with process_lock:
-            generation_process = subprocess.Popen(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                cwd=YUE_PATH,
-                env=dict(os.environ, 
-                    CUDA_VISIBLE_DEVICES=str(cuda_idx),
-                    HF_HOME=CACHE_DIR + "/huggingface",
-                    TORCH_HOME=CACHE_DIR + "/torch"
-                )
+        # Ensure even length
+        codec_ids = codec_ids[:2 * (len(codec_ids) // 2)]
+        if len(codec_ids) == 0:
+            continue
+        
+        # Validate codec IDs are in correct range (should be >= 45334 for audio tokens)
+        min_id = codec_ids.min()
+        max_id = codec_ids.max()
+        log(f"   DEBUG: Segment {i} codec_ids: len={len(codec_ids)}, min={min_id}, max={max_id}")
+        if min_id < 45334:
+            log(f"   ⚠️ WARNING: Found text tokens in output (min={min_id}, expected >=45334)")
+            log(f"   This may indicate the model generated text instead of audio tokens")
+            # Filter out invalid tokens (keep only codec tokens >= 45334)
+            valid_mask = codec_ids >= 45334
+            if valid_mask.sum() < 2:
+                log(f"   ❌ Segment {i} has no valid codec tokens, skipping")
+                continue
+            codec_ids = codec_ids[valid_mask]
+            codec_ids = codec_ids[:2 * (len(codec_ids) // 2)]  # Re-ensure even length
+            log(f"   Filtered to {len(codec_ids)} valid codec tokens")
+        
+        vocal_ids = codec_tool.ids2npy(rearrange(codec_ids, "(n b) -> b n", b=2)[0])
+        inst_ids = codec_tool.ids2npy(rearrange(codec_ids, "(n b) -> b n", b=2)[1])
+        vocals.append(vocal_ids)
+        instrumentals.append(inst_ids)
+    
+    vocals = np.concatenate(vocals, axis=1)
+    instrumentals = np.concatenate(instrumentals, axis=1)
+    
+    stage1_time = time.time() - stage1_start
+    log(f"   Stage 1 completed in {stage1_time:.1f}s")
+    
+    # Offload Stage 1 model back to CPU to free VRAM for Stage 2
+    log("   Offloading Stage 1 model to free VRAM...")
+    model_s1.to("cpu")
+    torch.cuda.empty_cache()
+    gc.collect()
+    log(f"   After Stage 1 offload - GPU memory: {torch.cuda.memory_allocated()/1024**3:.1f}GB")
+    
+    # Also offload codec model - Stage 2 doesn't need it until audio decoding
+    codec_model = STATE["codec"]
+    log("   Offloading codec model...")
+    codec_model.to("cpu")
+    torch.cuda.empty_cache()
+    gc.collect()
+    log(f"   After codec offload - GPU memory: {torch.cuda.memory_allocated()/1024**3:.1f}GB")
+    
+    # Stage 2: Semantic → Audio tokens
+    stage2_start = time.time()
+    log("   Stage 2: Semantic → Audio tokens...")
+    
+    vocal_audio = stage2_inference(vocals, "vocal")
+    inst_audio = stage2_inference(instrumentals, "instrumental")
+    
+    # Mix tracks
+    mix_audio = (vocal_audio + inst_audio) / 1.0
+    
+    # Save outputs
+    output_dir = Path("/app/output")
+    output_dir.mkdir(exist_ok=True)
+    
+    vocal_path = output_dir / "vocal.wav"
+    inst_path = output_dir / "instrumental.wav"
+    mix_path = output_dir / "mix.wav"
+    
+    sf.write(str(vocal_path), vocal_audio, 44100)
+    sf.write(str(inst_path), inst_audio, 44100)
+    sf.write(str(mix_path), mix_audio, 44100)
+    
+    stage2_time = time.time() - stage2_start
+    total_time = time.time() - start_time
+    log(f"   Stage 2 completed in {stage2_time:.1f}s")
+    log(f"✅ Generation complete! Total time: {total_time:.1f}s ({total_time/60:.1f} min)")
+    return f"✅ Song generated successfully! ({total_time:.1f}s)", str(mix_path), str(vocal_path)
+
+
+def stage2_inference(semantic_npy, track_type):
+    """Convert semantic tokens (from ids2npy) to audio using Stage 2 model
+    
+    Reference implementation from YuEGP/inference/infer.py
+    mmgp handles model layer offloading automatically - don't force to GPU!
+    """
+    model_s2 = STATE["models"]["stage2"]
+    codec_tool = STATE["codec_tool"]
+    codec_tool_s2 = STATE["codec_tool_s2"]
+    tokenizer = STATE["tokenizer"]
+    device = STATE["device"]
+    vocoder = STATE["vocoder"]
+    codec_model = STATE["codec"]  # soundstream model
+    
+    # DON'T force Stage 2 model to GPU - mmgp handles layer-by-layer offloading
+    # Moving the entire model defeats mmgp's memory management
+    model_device = next(model_s2.parameters()).device
+    log(f"      Stage 2 model device: {model_device} (mmgp managed)")
+    
+    # semantic_npy is (1, T) from ids2npy - values are 0-1023
+    prompt = semantic_npy.astype(np.int32)
+    log(f"      Stage2 input shape: {prompt.shape}, min={prompt.min()}, max={prompt.max()}")
+    
+    # Calculate output duration (6 second segments = 300 frames at 50fps)
+    total_frames = prompt.shape[1]
+    output_duration = (total_frames // 50 // 6) * 6  # In seconds, 6s chunks
+    num_segments = output_duration // 6
+    
+    log(f"      Total frames: {total_frames}, output_duration: {output_duration}s, segments: {num_segments}")
+    
+    all_outputs = []
+    
+    if num_segments == 0:
+        # Less than 6 seconds, process all
+        log(f"      Processing {total_frames} frames as single batch...")
+        output = stage2_generate(prompt, tokenizer, model_s2, device, codec_tool)
+        all_outputs.append(output)
+    else:
+        # Process in 6-second segments (300 frames each)
+        segment_frames = 300
+        for seg in range(num_segments):
+            start_idx = seg * segment_frames
+            end_idx = (seg + 1) * segment_frames
+            segment_prompt = prompt[:, start_idx:end_idx]
+            log(f"      Processing segment {seg+1}/{num_segments} (frames {start_idx}-{end_idx})...")
+            segment_output = stage2_generate(segment_prompt, tokenizer, model_s2, device, codec_tool)
+            all_outputs.append(segment_output)
+            
+            # Critical: Clear VRAM between segments to prevent accumulation
+            torch.cuda.empty_cache()
+            gc.collect()
+            vram_used = torch.cuda.memory_allocated() / 1024**3
+            log(f"      Segment {seg+1} done. VRAM: {vram_used:.1f}GB")
+        
+        # Handle remaining frames
+        remaining_start = output_duration * 50
+        if remaining_start < total_frames:
+            remaining_prompt = prompt[:, remaining_start:]
+            if remaining_prompt.shape[1] > 0:
+                # Extra cleanup before the final segment
+                torch.cuda.empty_cache()
+                gc.collect()
+                log(f"      Processing remaining {remaining_prompt.shape[1]} frames... (VRAM: {torch.cuda.memory_allocated()/1024**3:.1f}GB)")
+                remaining_output = stage2_generate(remaining_prompt, tokenizer, model_s2, device, codec_tool)
+                all_outputs.append(remaining_output)
+    
+    output = np.concatenate(all_outputs, axis=0)
+    log(f"      Stage2 output: {output.shape}, min={output.min()}, max={output.max()}")
+    
+    # Convert stage2 output to codec format (8 codebooks)
+    output_npy = codec_tool_s2.ids2npy(output)
+    log(f"      Codec npy shape: {output_npy.shape}")
+    
+    # Fix invalid codes (values outside 0-1023 range)
+    import copy
+    from collections import Counter
+    fixed_output = copy.deepcopy(output_npy)
+    invalid_count = 0
+    for i, line in enumerate(output_npy):
+        for j, element in enumerate(line):
+            if element < 0 or element > 1023:
+                invalid_count += 1
+                counter = Counter(line)
+                most_frequent = sorted(counter.items(), key=lambda x: x[1], reverse=True)[0][0]
+                fixed_output[i, j] = most_frequent
+    if invalid_count > 0:
+        log(f"      Fixed {invalid_count} invalid codes")
+    
+    # Clear VRAM before audio decode by forcing mmgp to unload all model blocks
+    log(f"      Clearing VRAM before audio decode... (VRAM: {torch.cuda.memory_allocated()/1024**3:.1f}GB)")
+    
+    # Access mmgp's global offload object and force unload all blocks
+    import mmgp.offload as mmgp_offload
+    if hasattr(mmgp_offload, 'last_offload_obj') and mmgp_offload.last_offload_obj is not None:
+        log(f"      Forcing mmgp to unload all model blocks from GPU...")
+        mmgp_offload.last_offload_obj.unload_all()
+    
+    torch.cuda.empty_cache()
+    gc.collect()
+    log(f"      After mmgp unload - VRAM: {torch.cuda.memory_allocated()/1024**3:.1f}GB")
+    
+    # Reload codec model to GPU for audio decoding
+    log(f"      Reloading codec model to GPU for audio decode...")
+    codec_model.to(device)
+    torch.cuda.empty_cache()
+    log(f"      Codec model loaded - VRAM: {torch.cuda.memory_allocated()/1024**3:.1f}GB")
+    
+    # First decode at 16kHz using codec_model.decode (matching reference)
+    # Shape needs to be (8, 1, T) for the codec decoder
+    # Use chunked decoding for long sequences to avoid OOM
+    with torch.no_grad():
+        codec_input = torch.as_tensor(fixed_output.astype(np.int16), dtype=torch.long).unsqueeze(0).permute(1, 0, 2).to(device)
+        log(f"      Codec input shape for decode: {codec_input.shape}")  # Should be (8, 1, T)
+        
+        # Chunk the decode if sequence is too long
+        T = codec_input.shape[2]
+        chunk_size = 500  # Process 500 frames at a time
+        if T > chunk_size:
+            log(f"      Using chunked decode ({T} frames in {(T + chunk_size - 1) // chunk_size} chunks)...")
+            decoded_chunks = []
+            for i in range(0, T, chunk_size):
+                end_idx = min(i + chunk_size, T)
+                chunk = codec_input[:, :, i:end_idx]
+                decoded_chunk = codec_model.decode(chunk)
+                decoded_chunks.append(decoded_chunk.cpu())
+                torch.cuda.empty_cache()
+            decoded_waveform = torch.cat(decoded_chunks, dim=-1).squeeze(0)
+        else:
+            decoded_waveform = codec_model.decode(codec_input)
+            decoded_waveform = decoded_waveform.cpu().squeeze(0)
+        log(f"      Decoded waveform shape: {decoded_waveform.shape}, sr=16000")
+    
+    # Now upsample to 44.1kHz using vocoder
+    vocal_decoder, inst_decoder = vocoder
+    decoder = vocal_decoder if track_type == "vocal" else inst_decoder
+    decoder.eval()
+    decoder = decoder.to(device)
+    
+    with torch.no_grad():
+        # Get embeddings and decode with vocoder for 44.1kHz output
+        codec_embed = torch.as_tensor(fixed_output.astype(np.int16), dtype=torch.long).unsqueeze(1).to(device)
+        embeddings = codec_model.get_embed(codec_embed)
+        embeddings = torch.tensor(embeddings).to(device)
+        log(f"      Vocoder input embeddings shape: {embeddings.shape}")
+        
+        # Chunk vocoder decode if needed
+        T = embeddings.shape[0]
+        chunk_size = 500  # Process 500 frames at a time
+        if T > chunk_size:
+            log(f"      Using chunked vocoder decode ({T} frames)...")
+            audio_chunks = []
+            for i in range(0, T, chunk_size):
+                end_idx = min(i + chunk_size, T)
+                chunk = embeddings[i:end_idx]
+                audio_chunk = decoder(chunk)
+                audio_chunks.append(audio_chunk.squeeze().detach().cpu())
+                torch.cuda.empty_cache()
+            audio = torch.cat(audio_chunks, dim=-1).numpy()
+        else:
+            audio_44k = decoder(embeddings)
+            audio = audio_44k.squeeze().detach().cpu().numpy()
+        log(f"      Final audio shape: {audio.shape}, sample_rate=44100")
+    
+    # CRITICAL: Offload codec model and vocoder after audio decode
+    # This prepares GPU for the next track (instrumental) or frees memory
+    log(f"      Cleaning up after {track_type} audio decode...")
+    codec_model.to("cpu")
+    decoder.to("cpu")
+    torch.cuda.empty_cache()
+    gc.collect()
+    log(f"      After cleanup - VRAM: {torch.cuda.memory_allocated()/1024**3:.1f}GB")
+    
+    return audio
+
+
+def stage2_generate(prompt, tokenizer, model_s2, device, codec_tool):
+    """Generate 8-codebook audio tokens from 1-codebook semantic tokens
+    
+    Args:
+        prompt: numpy array (1, T) with values 0-1023 (raw codec values from ids2npy)
+        tokenizer: MMTokenizer
+        model_s2: Stage 2 model
+        device: torch device
+        codec_tool: CodecManipulator for xcodec (n_quantizer=1)
+    """
+    # Unflatten prompt to get (1, T) codec_ids and add offset
+    codec_ids = codec_tool.unflatten(prompt, n_quantizer=1)
+    codec_ids = codec_tool.offset_tok_ids(
+        codec_ids,
+        global_offset=codec_tool.global_offset,
+        codebook_size=codec_tool.codebook_size,
+        num_codebooks=codec_tool.num_codebooks,
+    ).astype(np.int32)
+    
+    # Build initial prompt: [soa, stage_1, codec_ids_flat, stage_2]
+    prompt_ids = np.concatenate([
+        np.array([tokenizer.soa, tokenizer.stage_1]),
+        codec_ids.flatten(),
+        np.array([tokenizer.stage_2])
+    ]).astype(np.int32)
+    # IMPORTANT: Put tensors on CUDA - mmgp expects CUDA inputs even though it manages offloading
+    # The embedding layer stays on CUDA, so input_ids must be on CUDA too
+    prompt_ids = torch.as_tensor(prompt_ids).unsqueeze(0).to(device)
+    
+    # Convert codec_ids to tensor for indexing (also on CUDA for consistency)
+    codec_ids_tensor = torch.as_tensor(codec_ids).to(device)
+    
+    len_prompt = prompt_ids.shape[-1]
+    block_list = LogitsProcessorList([
+        BlockTokenRangeProcessor(0, 46358),
+        BlockTokenRangeProcessor(53526, tokenizer.vocab_size)
+    ])
+    
+    # Teacher forcing loop - for each frame, add cb0 and generate 7 more codebooks
+    num_frames = codec_ids_tensor.shape[1]
+    for frame_idx in range(num_frames):
+        cb0 = codec_ids_tensor[:, frame_idx:frame_idx+1]
+        prompt_ids = torch.cat([prompt_ids, cb0], dim=1)
+        
+        with torch.no_grad():
+            stage2_output = model_s2.generate(
+                input_ids=prompt_ids,
+                min_new_tokens=7,
+                max_new_tokens=7,
+                eos_token_id=tokenizer.eoa,
+                pad_token_id=tokenizer.eoa,
+                logits_processor=block_list,
             )
         
-        # Start log reader thread
-        log_thread = threading.Thread(target=log_reader, args=(generation_process,), daemon=True)
-        log_thread.start()
+        # Keep prompt_ids on CUDA - mmgp expects CUDA inputs
+        prompt_ids = stage2_output
         
-        progress(0.3, desc="Generation in progress...")
-        
-        # Cleanup temp files
-        try:
-            os.unlink(genre_file)
-            os.unlink(lyrics_file)
-        except:
-            pass
-        
-        return "Generation started successfully!", generation_process.pid, gr.Button(interactive=False), gr.Button(interactive=True)
-        
-    except Exception as e:
-        # Cleanup temp files on error
-        try:
-            if 'genre_file' in locals():
-                os.unlink(genre_file)
-            if 'lyrics_file' in locals():
-                os.unlink(lyrics_file)
-        except:
-            pass
-        
-        return f"Error starting generation: {str(e)}", None, gr.Button(interactive=True), gr.Button(interactive=False)
+        # Periodic cache cleanup every 50 frames to prevent fragmentation
+        if frame_idx % 50 == 0 and frame_idx > 0:
+            torch.cuda.empty_cache()
+    
+    # Final cleanup
+    torch.cuda.empty_cache()
+    
+    # Extract only the generated tokens (after the initial prompt)
+    # Move to CPU before converting to numpy
+    output = prompt_ids[0].cpu().numpy()[len_prompt:]
+    
+    return output
 
-def get_generation_logs():
-    """Get the latest logs from the generation process."""
-    logs = ""
-    while not log_queue.empty():
-        try:
-            logs += log_queue.get_nowait()
-        except queue.Empty:
-            break
-    return logs
-
-def list_output_files():
-    """List generated output files."""
-    output_path = Path(OUTPUT_DIR)
-    if not output_path.exists():
-        return []
-    
-    # Look for audio files
-    audio_files = []
-    for ext in ['*.wav', '*.mp3', '*.flac']:
-        audio_files.extend(output_path.glob(f"**/{ext}"))
-    
-    # Sort by modification time (newest first)
-    audio_files.sort(key=lambda x: x.stat().st_mtime, reverse=True)
-    
-    return [str(f) for f in audio_files[:10]]  # Return only the 10 most recent files
-
-def load_example_prompts():
-    """Load example prompts from the YuE repository."""
-    examples = {}
-    
-    # Try to load genre examples
-    genre_path = Path(YUE_PATH) / "prompt_egs" / "genre.txt"
-    if genre_path.exists():
-        with open(genre_path, 'r') as f:
-            examples['genre'] = f.read().strip()
-    else:
-        examples['genre'] = EXAMPLE_GENRE
-    
-    # Try to load lyrics examples  
-    lyrics_path = Path(YUE_PATH) / "prompt_egs" / "lyrics.txt"
-    if lyrics_path.exists():
-        with open(lyrics_path, 'r') as f:
-            examples['lyrics'] = f.read().strip()
-    else:
-        examples['lyrics'] = EXAMPLE_LYRICS
-    
-    return examples
 
 def create_interface():
-    """Create the Gradio interface."""
-    
-    # Load examples
-    examples = load_example_prompts()
-    
-    with gr.Blocks(
-        title="YuE Music Generation",
-        theme=gr.themes.Soft(),
-        css="""
-        .container { max-width: 1200px; margin: auto; }
-        .header { text-align: center; padding: 20px; }
-        .examples { background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }
-        """
-    ) as interface:
-        
-        gr.HTML("""
-        <div class="header">
-            <h1>🎵 YuE Music Generation Interface</h1>
-            <p>Generate high-quality music from text prompts using the YuE model</p>
-        </div>
-        """)
+    """Create Gradio interface"""
+    with gr.Blocks(title="YuE GPU-Poor") as interface:
+        gr.Markdown("# YuE GPU-Poor - RTX 3060 12GB Optimized")
+        gr.Markdown("Generate songs from lyrics using mmgp Profile 3 (12GB VRAM + 8-bit quantization)")
         
         with gr.Row():
-            with gr.Column(scale=2):
-                # Model Configuration
-                with gr.Group():
-                    gr.Markdown("### 🎯 Model Configuration")
-                    stage1_model = gr.Textbox(
-                        label="Stage 1 Model",
-                        value=DEFAULT_STAGE1_MODEL,
-                        info="HuggingFace model ID or local path for Stage 1 (text-to-semantic tokens)"
-                    )
-                    stage2_model = gr.Textbox(
-                        label="Stage 2 Model", 
-                        value=DEFAULT_STAGE2_MODEL,
-                        info="HuggingFace model ID or local path for Stage 2 (semantic-to-audio tokens)"
-                    )
-                
-                # Generation Parameters
-                with gr.Group():
-                    gr.Markdown("### ⚙️ Generation Parameters")
-                    max_new_tokens = gr.Slider(
-                        label="Max New Tokens",
-                        minimum=500,
-                        maximum=6000,
-                        step=100,
-                        value=DEFAULT_MAX_NEW_TOKENS,
-                        info="Maximum number of new tokens to generate (affects duration)"
-                    )
-                    repetition_penalty = gr.Slider(
-                        label="Repetition Penalty",
-                        minimum=1.0,
-                        maximum=2.0,
-                        step=0.05,
-                        value=DEFAULT_REPETITION_PENALTY,
-                        info="Penalty for repeated patterns (1.0 = no penalty)"
-                    )
-                    stage2_batch_size = gr.Slider(
-                        label="Stage 2 Batch Size",
-                        minimum=1,
-                        maximum=16,
-                        step=1,
-                        value=DEFAULT_STAGE2_BATCH_SIZE,
-                        info="Batch size for Stage 2 processing (higher = faster but more VRAM)"
-                    )
-                    run_n_segments = gr.Slider(
-                        label="Number of Segments",
-                        minimum=1,
-                        maximum=10,
-                        step=1,
-                        value=DEFAULT_RUN_N_SEGMENTS,
-                        info="Number of lyric segments to generate"
-                    )
-                    seed = gr.Number(
-                        label="Seed",
-                        value=DEFAULT_SEED,
-                        precision=0,
-                        info="Random seed for reproducible generation"
-                    )
-                    cuda_idx = gr.Number(
-                        label="CUDA Device Index",
-                        value=DEFAULT_CUDA_IDX,
-                        precision=0,
-                        info="GPU device index to use"
-                    )
-                    keep_intermediate = gr.Checkbox(
-                        label="Keep Intermediate Files",
-                        value=True,
-                        info="Save intermediate generation stages"
-                    )
+            with gr.Column():
+                genres_input = gr.Textbox(
+                    label="Genre Tags (5 descriptors)",
+                    placeholder="inspiring female uplifting pop airy vocal electronic bright vocal",
+                    lines=2,
+                    value="inspiring female uplifting pop airy vocal electronic bright vocal"
+                )
+                lyrics_input = gr.Textbox(
+                    label="Lyrics (use [verse], [chorus], [outro] tags)",
+                    placeholder="[verse]\nYour lyrics here\n\n[chorus]\nCatchy hook",
+                    lines=10,
+                    value="[verse]\nUnder the neon lights we dance\nLost in the rhythm of romance\n\n[chorus]\nWe are electric tonight\nShining so bright"
+                )
+                num_segments = gr.Slider(1, 5, value=2, step=1, label="Number of Segments")
+                seed_input = gr.Number(value=42, label="Random Seed", precision=0)
+                generate_btn = gr.Button("🎵 Generate Song", variant="primary")
             
-            with gr.Column(scale=3):
-                # Text Prompts
-                with gr.Group():
-                    gr.Markdown("### 📝 Text Prompts")
-                    
-                    gr.HTML('<div class="examples">💡 <strong>Genre Tips:</strong> Include 5 components: genre, instrument, mood, vocal gender, and vocal timbre (e.g., "bright vocal")</div>')
-                    
-                    genre_text = gr.Textbox(
-                        label="Genre Description",
-                        value=examples.get('genre', EXAMPLE_GENRE),
-                        lines=2,
-                        info="Describe the musical style, instruments, mood, and vocal characteristics"
-                    )
-                    
-                    gr.HTML('<div class="examples">💡 <strong>Lyrics Tips:</strong> Structure lyrics with sections like [verse], [chorus], [bridge]. Each section should be around 15-30 seconds worth of content.</div>')
-                    
-                    lyrics_text = gr.Textbox(
-                        label="Lyrics",
-                        value=examples.get('lyrics', EXAMPLE_LYRICS),
-                        lines=8,
-                        info="Structured lyrics with sections marked by [section_name]"
-                    )
-                
-                # Audio Prompts (ICL - In-Context Learning)
-                with gr.Group():
-                    gr.Markdown("### 🎧 Audio Prompts (Optional - In-Context Learning)")
-                    
-                    use_audio_prompt = gr.Checkbox(
-                        label="Use Single Audio Prompt",
-                        value=False,
-                        info="Use an audio file as reference for style"
-                    )
-                    
-                    with gr.Row():
-                        audio_prompt_file = gr.File(
-                            label="Audio Prompt File",
-                            file_types=["audio"],
-                            visible=False
-                        )
-                        with gr.Column():
-                            prompt_start_time = gr.Number(
-                                label="Start Time (s)",
-                                value=0,
-                                visible=False
-                            )
-                            prompt_end_time = gr.Number(
-                                label="End Time (s)",
-                                value=30,
-                                visible=False
-                            )
-                    
-                    use_dual_tracks_prompt = gr.Checkbox(
-                        label="Use Dual Track Prompts (Recommended)",
-                        value=False,
-                        info="Use separate vocal and instrumental tracks for better quality"
-                    )
-                    
-                    with gr.Row():
-                        vocal_track_file = gr.File(
-                            label="Vocal Track",
-                            file_types=["audio"],
-                            visible=False
-                        )
-                        instrumental_track_file = gr.File(
-                            label="Instrumental Track", 
-                            file_types=["audio"],
-                            visible=False
-                        )
-                
-                # Generation Controls
-                with gr.Group():
-                    gr.Markdown("### 🚀 Generation")
-                    with gr.Row():
-                        generate_btn = gr.Button("🎵 Generate Music", variant="primary", scale=2)
-                        stop_btn = gr.Button("⏹️ Stop", variant="stop", scale=1, interactive=False)
-                    
-                    status_text = gr.Textbox(
-                        label="Status",
-                        value="Ready to generate",
-                        interactive=False
-                    )
-        
-        # Results Section
-        with gr.Row():
             with gr.Column():
-                gr.Markdown("### 📊 Generation Logs")
-                logs_text = gr.Textbox(
-                    label="Logs",
-                    lines=15,
-                    max_lines=30,
-                    interactive=False,
-                    show_copy_button=True
-                )
-                
-                # Auto-refresh logs
-                logs_timer = gr.Timer(value=2.0, active=False)
-                
-            with gr.Column():
-                gr.Markdown("### 🎵 Generated Music")
-                
-                output_files = gr.Dropdown(
-                    label="Generated Files",
-                    choices=[],
-                    interactive=True,
-                    info="Select a generated audio file to play"
-                )
-                
-                audio_player = gr.Audio(
-                    label="Audio Player",
-                    type="filepath"
-                )
-                
-                refresh_files_btn = gr.Button("🔄 Refresh Files")
+                status_output = gr.Textbox(label="Status", lines=2)
+                mix_audio = gr.Audio(label="Mixed Output", type="filepath")
+                vocal_audio = gr.Audio(label="Vocal Track", type="filepath")
         
-        # Hidden state for process ID
-        process_id = gr.State(None)
+        gr.Markdown("**Generation time:** ~4-6 minutes per 30-second segment on RTX 3060")
         
-        # Event handlers
-        def toggle_audio_prompt_visibility(use_audio):
-            return [
-                gr.File(visible=use_audio),
-                gr.Number(visible=use_audio),
-                gr.Number(visible=use_audio)
-            ]
-        
-        def toggle_dual_track_visibility(use_dual):
-            return [
-                gr.File(visible=use_dual),
-                gr.File(visible=use_dual)
-            ]
-        
-        def handle_audio_prompt_change(use_audio, use_dual):
-            if use_audio:
-                return False, *toggle_audio_prompt_visibility(True), *toggle_dual_track_visibility(False)
-            return use_dual, *toggle_audio_prompt_visibility(False), *toggle_dual_track_visibility(use_dual)
-        
-        def handle_dual_track_change(use_audio, use_dual):
-            if use_dual:
-                return False, *toggle_audio_prompt_visibility(False), *toggle_dual_track_visibility(True)
-            return use_audio, *toggle_audio_prompt_visibility(use_audio), *toggle_dual_track_visibility(False)
-        
-        # Wire up visibility toggles
-        use_audio_prompt.change(
-            fn=handle_audio_prompt_change,
-            inputs=[use_audio_prompt, use_dual_tracks_prompt],
-            outputs=[use_dual_tracks_prompt, audio_prompt_file, prompt_start_time, prompt_end_time, vocal_track_file, instrumental_track_file]
-        )
-        
-        use_dual_tracks_prompt.change(
-            fn=handle_dual_track_change,
-            inputs=[use_audio_prompt, use_dual_tracks_prompt],
-            outputs=[use_audio_prompt, audio_prompt_file, prompt_start_time, prompt_end_time, vocal_track_file, instrumental_track_file]
-        )
-        
-        # Generation event
         generate_btn.click(
-            fn=generate_music,
-            inputs=[
-                stage1_model, stage2_model, genre_text, lyrics_text,
-                max_new_tokens, repetition_penalty, stage2_batch_size, run_n_segments,
-                seed, use_audio_prompt, audio_prompt_file, prompt_start_time, prompt_end_time,
-                use_dual_tracks_prompt, vocal_track_file, instrumental_track_file,
-                cuda_idx, keep_intermediate
-            ],
-            outputs=[status_text, process_id, generate_btn, stop_btn]
-        ).then(
-            fn=lambda: gr.Timer(active=True),
-            outputs=[logs_timer]
-        )
-        
-        # Stop event
-        stop_btn.click(
-            fn=stop_generation,
-            outputs=[status_text]
-        ).then(
-            fn=lambda: [gr.Button(interactive=True), gr.Button(interactive=False), gr.Timer(active=False)],
-            outputs=[generate_btn, stop_btn, logs_timer]
-        )
-        
-        # Log updates
-        def update_logs(current_logs):
-            new_logs = get_generation_logs()
-            if new_logs:
-                return current_logs + new_logs
-            return gr.update()
-        
-        logs_timer.tick(
-            fn=update_logs,
-            inputs=[logs_text],
-            outputs=[logs_text]
-        )
-        
-        # File refresh
-        def refresh_output_files():
-            files = list_output_files()
-            choices = [(os.path.basename(f), f) for f in files]
-            return gr.Dropdown(choices=choices)
-        
-        refresh_files_btn.click(
-            fn=refresh_output_files,
-            outputs=[output_files]
-        )
-        
-        # File selection
-        def load_audio_file(selected_file):
-            if selected_file:
-                return selected_file
-            return None
-        
-        output_files.change(
-            fn=load_audio_file,
-            inputs=[output_files],
-            outputs=[audio_player]
-        )
-        
-        # Auto-refresh files on interface load
-        interface.load(
-            fn=refresh_output_files,
-            outputs=[output_files]
+            fn=generate_song,
+            inputs=[genres_input, lyrics_input, num_segments, seed_input],
+            outputs=[status_output, mix_audio, vocal_audio]
         )
     
     return interface
 
+
 if __name__ == "__main__":
-    import argparse
+    profile = int(os.getenv("YUE_PROFILE", "3"))
+    initialize_models(profile=profile)
     
-    parser = argparse.ArgumentParser(description="YuE Gradio Interface")
-    parser.add_argument("--host", default="0.0.0.0", help="Host to bind the server to")
-    parser.add_argument("--port", type=int, default=7860, help="Port to bind the server to")
-    parser.add_argument("--share", action="store_true", help="Create a public link")
-    parser.add_argument("--debug", action="store_true", help="Enable debug mode")
-    
-    args = parser.parse_args()
-    
-    # Create output directory if it doesn't exist
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
-    
-    # Create and launch interface
     interface = create_interface()
-    
-    print(f"🎵 Starting YuE Gradio Interface on http://{args.host}:{args.port}")
-    print(f"📁 Output directory: {OUTPUT_DIR}")
-    print(f"💾 Cache directory: {CACHE_DIR}")
-    
     interface.launch(
-        server_name=args.host,
-        server_port=args.port,
-        share=args.share,
-        debug=args.debug,
-        show_error=True,
-        quiet=False
+        server_name="0.0.0.0",
+        server_port=7860,
+        share=False
     )

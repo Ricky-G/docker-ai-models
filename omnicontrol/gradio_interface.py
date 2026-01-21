@@ -87,13 +87,29 @@ def init_pipeline(profile_no=3, verbose_level=1):
             # Get memory reservation percentage (default 0.75 for Profile 3 - worked well before)
             perc_reserved_mem = float(os.environ.get("MMGP_PERC_RESERVED_MEM_MAX", "0.75"))
             print(f"   Reserved RAM: {int(perc_reserved_mem*100)}% (for {'full' if perc_reserved_mem >= 0.70 else 'partial'} pinning)")
-            offload.profile(
-                pipe,
-                profile_no=int(profile_no),
-                verboseLevel=int(verbose_level),
-                quantizeTransformer=False,
-                perc_reserved_mem_max=perc_reserved_mem
-            )
+            
+            # Get budget override - use 0 to keep model in VRAM (no offloading between generations)
+            # This prevents the 80-second reload penalty on each generation
+            budget_override = os.environ.get("MMGP_BUDGETS", None)
+            if budget_override is not None:
+                budget_value = int(budget_override)
+                print(f"   Budget override: {budget_value} MB (0 = unlimited VRAM, keeps model loaded)")
+                offload.profile(
+                    pipe,
+                    profile_no=int(profile_no),
+                    verboseLevel=int(verbose_level),
+                    quantizeTransformer=False,
+                    perc_reserved_mem_max=perc_reserved_mem,
+                    budgets=budget_value
+                )
+            else:
+                offload.profile(
+                    pipe,
+                    profile_no=int(profile_no),
+                    verboseLevel=int(verbose_level),
+                    quantizeTransformer=False,
+                    perc_reserved_mem_max=perc_reserved_mem
+                )
             print("✅ mmgp profiling complete!")
         else:
             print("⚠️  mmgp not available, loading to CUDA...")

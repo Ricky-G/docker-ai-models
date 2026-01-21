@@ -41,11 +41,13 @@ in a cozy study room. Warm afternoon sunlight streams through the window."
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `OMNI_PROFILE` | `3` | Memory profile (3 = 12GB VRAM) |
+| `MMGP_BUDGETS` | - | Set to `0` to keep model in VRAM between generations (eliminates 80s reload) |
 | `HF_TOKEN` | - | HuggingFace token for model downloads |
 | `GRADIO_SERVER_PORT` | `7860` | Web UI port |
 
 ## Troubleshooting
 
+**Model reloads on every generation (80s penalty)**: Add `-e MMGP_BUDGETS=0` to keep model in VRAM
 **Out of Memory**: Restart container to clear VRAM
 **Slow loading**: Models load from disk once, then stay in VRAM
 **Models not found**: Check HF_TOKEN and internet connection

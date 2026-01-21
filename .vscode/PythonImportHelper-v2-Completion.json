@@ -1,29 +1,503 @@
 [
     {
-        "label": "os",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "os",
-        "description": "os",
-        "detail": "os",
-        "documentation": {}
-    },
-    {
-        "label": "gradio",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "gradio",
-        "description": "gradio",
-        "detail": "gradio",
-        "documentation": {}
-    },
-    {
         "label": "torch",
         "kind": 6,
         "isExtraImport": true,
         "importPath": "torch",
         "description": "torch",
         "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "Tensor",
+        "importPath": "torch",
+        "description": "torch",
+        "isExtraImport": true,
+        "detail": "torch",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Tuple",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Type",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "List",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Union",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Optional",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Dict",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Any",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Callable",
+        "importPath": "typing",
+        "description": "typing",
+        "isExtraImport": true,
+        "detail": "typing",
+        "documentation": {}
+    },
+    {
+        "label": "Attention",
+        "importPath": "diffusers.models.attention_processor",
+        "description": "diffusers.models.attention_processor",
+        "isExtraImport": true,
+        "detail": "diffusers.models.attention_processor",
+        "documentation": {}
+    },
+    {
+        "label": "F",
+        "importPath": "diffusers.models.attention_processor",
+        "description": "diffusers.models.attention_processor",
+        "isExtraImport": true,
+        "detail": "diffusers.models.attention_processor",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipeline",
+        "importPath": "diffusers.pipelines",
+        "description": "diffusers.pipelines",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipeline",
+        "importPath": "diffusers.pipelines",
+        "description": "diffusers.pipelines",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipeline",
+        "importPath": "diffusers.pipelines",
+        "description": "diffusers.pipelines",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipeline",
+        "importPath": "diffusers.pipelines",
+        "description": "diffusers.pipelines",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipeline",
+        "importPath": "diffusers.pipelines",
+        "description": "diffusers.pipelines",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageFilter",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageDraw",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageFont",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "Image",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageDraw",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "ImageFont",
+        "importPath": "PIL",
+        "description": "PIL",
+        "isExtraImport": true,
+        "detail": "PIL",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "cv2",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "cv2",
+        "description": "cv2",
+        "detail": "cv2",
+        "documentation": {}
+    },
+    {
+        "label": "yaml,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "yaml.",
+        "description": "yaml.",
+        "detail": "yaml.",
+        "documentation": {}
+    },
+    {
+        "label": "FluxPipelineOutput",
+        "importPath": "diffusers.pipelines.flux.pipeline_flux",
+        "description": "diffusers.pipelines.flux.pipeline_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines.flux.pipeline_flux",
+        "documentation": {}
+    },
+    {
+        "label": "calculate_shift",
+        "importPath": "diffusers.pipelines.flux.pipeline_flux",
+        "description": "diffusers.pipelines.flux.pipeline_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines.flux.pipeline_flux",
+        "documentation": {}
+    },
+    {
+        "label": "retrieve_timesteps",
+        "importPath": "diffusers.pipelines.flux.pipeline_flux",
+        "description": "diffusers.pipelines.flux.pipeline_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines.flux.pipeline_flux",
+        "documentation": {}
+    },
+    {
+        "label": "np",
+        "importPath": "diffusers.pipelines.flux.pipeline_flux",
+        "description": "diffusers.pipelines.flux.pipeline_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines.flux.pipeline_flux",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "diffusers.pipelines.flux.pipeline_flux",
+        "description": "diffusers.pipelines.flux.pipeline_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.pipelines.flux.pipeline_flux",
+        "documentation": {}
+    },
+    {
+        "label": "BaseTunerLayer",
+        "importPath": "peft.tuners.tuners_utils",
+        "description": "peft.tuners.tuners_utils",
+        "isExtraImport": true,
+        "detail": "peft.tuners.tuners_utils",
+        "documentation": {}
+    },
+    {
+        "label": "logging",
+        "importPath": "diffusers.utils",
+        "description": "diffusers.utils",
+        "isExtraImport": true,
+        "detail": "diffusers.utils",
+        "documentation": {}
+    },
+    {
+        "label": "is_torch_version",
+        "importPath": "diffusers.utils",
+        "description": "diffusers.utils",
+        "isExtraImport": true,
+        "detail": "diffusers.utils",
+        "documentation": {}
+    },
+    {
+        "label": "scale_lora_layers",
+        "importPath": "diffusers.utils",
+        "description": "diffusers.utils",
+        "isExtraImport": true,
+        "detail": "diffusers.utils",
+        "documentation": {}
+    },
+    {
+        "label": "unscale_lora_layers",
+        "importPath": "diffusers.utils",
+        "description": "diffusers.utils",
+        "isExtraImport": true,
+        "detail": "diffusers.utils",
+        "documentation": {}
+    },
+    {
+        "label": "FluxTransformer2DModel",
+        "importPath": "diffusers.models.transformers.transformer_flux",
+        "description": "diffusers.models.transformers.transformer_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.models.transformers.transformer_flux",
+        "documentation": {}
+    },
+    {
+        "label": "Transformer2DModelOutput",
+        "importPath": "diffusers.models.transformers.transformer_flux",
+        "description": "diffusers.models.transformers.transformer_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.models.transformers.transformer_flux",
+        "documentation": {}
+    },
+    {
+        "label": "USE_PEFT_BACKEND",
+        "importPath": "diffusers.models.transformers.transformer_flux",
+        "description": "diffusers.models.transformers.transformer_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.models.transformers.transformer_flux",
+        "documentation": {}
+    },
+    {
+        "label": "logger",
+        "importPath": "diffusers.models.transformers.transformer_flux",
+        "description": "diffusers.models.transformers.transformer_flux",
+        "isExtraImport": true,
+        "detail": "diffusers.models.transformers.transformer_flux",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
         "documentation": {}
     },
     {
@@ -36,11 +510,53 @@
         "documentation": {}
     },
     {
-        "label": "Path",
-        "importPath": "pathlib",
-        "description": "pathlib",
+        "label": "argparse",
+        "kind": 6,
         "isExtraImport": true,
-        "detail": "pathlib",
+        "importPath": "argparse",
+        "description": "argparse",
+        "detail": "argparse",
+        "documentation": {}
+    },
+    {
+        "label": "gradio",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "gradio",
+        "description": "gradio",
+        "detail": "gradio",
+        "documentation": {}
+    },
+    {
+        "label": "FluxTransformer2DModel",
+        "importPath": "diffusers",
+        "description": "diffusers",
+        "isExtraImport": true,
+        "detail": "diffusers",
+        "documentation": {}
+    },
+    {
+        "label": "Condition",
+        "importPath": "src.flux.condition",
+        "description": "src.flux.condition",
+        "isExtraImport": true,
+        "detail": "src.flux.condition",
+        "documentation": {}
+    },
+    {
+        "label": "seed_everything",
+        "importPath": "src.flux.generate",
+        "description": "src.flux.generate",
+        "isExtraImport": true,
+        "detail": "src.flux.generate",
+        "documentation": {}
+    },
+    {
+        "label": "generate",
+        "importPath": "src.flux.generate",
+        "description": "src.flux.generate",
+        "isExtraImport": true,
+        "detail": "src.flux.generate",
         "documentation": {}
     },
     {
@@ -76,51 +592,11 @@
         "documentation": {}
     },
     {
-        "label": "Image",
-        "importPath": "PIL",
-        "description": "PIL",
+        "label": "Path",
+        "importPath": "pathlib",
+        "description": "pathlib",
         "isExtraImport": true,
-        "detail": "PIL",
-        "documentation": {}
-    },
-    {
-        "label": "ImageDraw",
-        "importPath": "PIL",
-        "description": "PIL",
-        "isExtraImport": true,
-        "detail": "PIL",
-        "documentation": {}
-    },
-    {
-        "label": "ImageFont",
-        "importPath": "PIL",
-        "description": "PIL",
-        "isExtraImport": true,
-        "detail": "PIL",
-        "documentation": {}
-    },
-    {
-        "label": "Image",
-        "importPath": "PIL",
-        "description": "PIL",
-        "isExtraImport": true,
-        "detail": "PIL",
-        "documentation": {}
-    },
-    {
-        "label": "ImageDraw",
-        "importPath": "PIL",
-        "description": "PIL",
-        "isExtraImport": true,
-        "detail": "PIL",
-        "documentation": {}
-    },
-    {
-        "label": "ImageFont",
-        "importPath": "PIL",
-        "description": "PIL",
-        "isExtraImport": true,
-        "detail": "PIL",
+        "detail": "pathlib",
         "documentation": {}
     },
     {
@@ -158,66 +634,20 @@
         "documentation": {}
     },
     {
-        "label": "numpy",
-        "kind": 6,
+        "label": "snapshot_download",
+        "importPath": "huggingface_hub",
+        "description": "huggingface_hub",
         "isExtraImport": true,
-        "importPath": "numpy",
-        "description": "numpy",
-        "detail": "numpy",
+        "detail": "huggingface_hub",
         "documentation": {}
     },
     {
-        "label": "tempfile",
+        "label": "gc",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "tempfile",
-        "description": "tempfile",
-        "detail": "tempfile",
-        "documentation": {}
-    },
-    {
-        "label": "json",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "json",
-        "description": "json",
-        "detail": "json",
-        "documentation": {}
-    },
-    {
-        "label": "shutil",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "shutil",
-        "description": "shutil",
-        "detail": "shutil",
-        "documentation": {}
-    },
-    {
-        "label": "glob",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "glob",
-        "description": "glob",
-        "detail": "glob",
-        "documentation": {}
-    },
-    {
-        "label": "threading",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "threading",
-        "description": "threading",
-        "detail": "threading",
-        "documentation": {}
-    },
-    {
-        "label": "queue",
-        "kind": 6,
-        "isExtraImport": true,
-        "importPath": "queue",
-        "description": "queue",
-        "detail": "queue",
+        "importPath": "gc",
+        "description": "gc",
+        "detail": "gc",
         "documentation": {}
     },
     {
@@ -230,12 +660,276 @@
         "documentation": {}
     },
     {
-        "label": "signal",
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "soundfile",
         "kind": 6,
         "isExtraImport": true,
-        "importPath": "signal",
-        "description": "signal",
-        "detail": "signal",
+        "importPath": "soundfile",
+        "description": "soundfile",
+        "detail": "soundfile",
+        "documentation": {}
+    },
+    {
+        "label": "AutoModelForCausalLM",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "LogitsProcessor",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "LogitsProcessorList",
+        "importPath": "transformers",
+        "description": "transformers",
+        "isExtraImport": true,
+        "detail": "transformers",
+        "documentation": {}
+    },
+    {
+        "label": "offload",
+        "importPath": "mmgp",
+        "description": "mmgp",
+        "isExtraImport": true,
+        "detail": "mmgp",
+        "documentation": {}
+    },
+    {
+        "label": "rearrange",
+        "importPath": "einops",
+        "description": "einops",
+        "isExtraImport": true,
+        "detail": "einops",
+        "documentation": {}
+    },
+    {
+        "label": "attn_forward",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.block",
+        "description": "omnicontrol.src.flux.block",
+        "peekOfCode": "def attn_forward(\n    attn: Attention,\n    hidden_states: torch.FloatTensor,\n    encoder_hidden_states: torch.FloatTensor = None,\n    condition_latents: torch.FloatTensor = None,\n    attention_mask: Optional[torch.FloatTensor] = None,\n    image_rotary_emb: Optional[torch.Tensor] = None,\n    cond_rotary_emb: Optional[torch.Tensor] = None,\n    model_config: Optional[Dict[str, Any]] = {},\n) -> torch.FloatTensor:",
+        "detail": "omnicontrol.src.flux.block",
+        "documentation": {}
+    },
+    {
+        "label": "block_forward",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.block",
+        "description": "omnicontrol.src.flux.block",
+        "peekOfCode": "def block_forward(\n    self,\n    hidden_states: torch.FloatTensor,\n    encoder_hidden_states: torch.FloatTensor,\n    condition_latents: torch.FloatTensor,\n    temb: torch.FloatTensor,\n    cond_temb: torch.FloatTensor,\n    cond_rotary_emb=None,\n    image_rotary_emb=None,\n    model_config: Optional[Dict[str, Any]] = {},",
+        "detail": "omnicontrol.src.flux.block",
+        "documentation": {}
+    },
+    {
+        "label": "single_block_forward",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.block",
+        "description": "omnicontrol.src.flux.block",
+        "peekOfCode": "def single_block_forward(\n    self,\n    hidden_states: torch.FloatTensor,\n    temb: torch.FloatTensor,\n    image_rotary_emb=None,\n    condition_latents: torch.FloatTensor = None,\n    cond_temb: torch.FloatTensor = None,\n    cond_rotary_emb=None,\n    model_config: Optional[Dict[str, Any]] = {},\n):",
+        "detail": "omnicontrol.src.flux.block",
+        "documentation": {}
+    },
+    {
+        "label": "Condition",
+        "kind": 6,
+        "importPath": "omnicontrol.src.flux.condition",
+        "description": "omnicontrol.src.flux.condition",
+        "peekOfCode": "class Condition(object):\n    def __init__(\n        self,\n        condition_type: str,\n        raw_img: Union[Image.Image, torch.Tensor] = None,\n        condition: Union[Image.Image, torch.Tensor] = None,\n        mask=None,\n        position_delta=None,\n    ) -> None:\n        self.condition_type = condition_type",
+        "detail": "omnicontrol.src.flux.condition",
+        "documentation": {}
+    },
+    {
+        "label": "condition_dict",
+        "kind": 5,
+        "importPath": "omnicontrol.src.flux.condition",
+        "description": "omnicontrol.src.flux.condition",
+        "peekOfCode": "condition_dict = {\n    \"depth\": 0,\n    \"canny\": 1,\n    \"subject\": 4,\n    \"coloring\": 6,\n    \"deblurring\": 7,\n    \"depth_pred\": 8,\n    \"fill\": 9,\n    \"sr\": 10,\n    \"cartoon\": 11,",
+        "detail": "omnicontrol.src.flux.condition",
+        "documentation": {}
+    },
+    {
+        "label": "get_config",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.generate",
+        "description": "omnicontrol.src.flux.generate",
+        "peekOfCode": "def get_config(config_path: str = None):\n    config_path = config_path or os.environ.get(\"XFL_CONFIG\")\n    if not config_path:\n        return {}\n    with open(config_path, \"r\") as f:\n        config = yaml.safe_load(f)\n    return config\ndef prepare_params(\n    prompt: Union[str, List[str]] = None,\n    prompt_2: Optional[Union[str, List[str]]] = None,",
+        "detail": "omnicontrol.src.flux.generate",
+        "documentation": {}
+    },
+    {
+        "label": "prepare_params",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.generate",
+        "description": "omnicontrol.src.flux.generate",
+        "peekOfCode": "def prepare_params(\n    prompt: Union[str, List[str]] = None,\n    prompt_2: Optional[Union[str, List[str]]] = None,\n    height: Optional[int] = 512,\n    width: Optional[int] = 512,\n    num_inference_steps: int = 28,\n    timesteps: List[int] = None,\n    guidance_scale: float = 3.5,\n    num_images_per_prompt: Optional[int] = 1,\n    generator: Optional[Union[torch.Generator, List[torch.Generator]]] = None,",
+        "detail": "omnicontrol.src.flux.generate",
+        "documentation": {}
+    },
+    {
+        "label": "seed_everything",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.generate",
+        "description": "omnicontrol.src.flux.generate",
+        "peekOfCode": "def seed_everything(seed: int = 42):\n    torch.backends.cudnn.deterministic = True\n    torch.manual_seed(seed)\n    np.random.seed(seed)\n@torch.no_grad()\ndef generate(\n    pipeline: FluxPipeline,\n    conditions: List[Condition] = None,\n    config_path: str = None,\n    model_config: Optional[Dict[str, Any]] = {},",
+        "detail": "omnicontrol.src.flux.generate",
+        "documentation": {}
+    },
+    {
+        "label": "generate",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.generate",
+        "description": "omnicontrol.src.flux.generate",
+        "peekOfCode": "def generate(\n    pipeline: FluxPipeline,\n    conditions: List[Condition] = None,\n    config_path: str = None,\n    model_config: Optional[Dict[str, Any]] = {},\n    condition_scale: float = 1.0,\n    default_lora: bool = False,\n    **params: dict,\n):\n    model_config = model_config or get_config(config_path).get(\"model\", {})",
+        "detail": "omnicontrol.src.flux.generate",
+        "documentation": {}
+    },
+    {
+        "label": "enable_lora",
+        "kind": 6,
+        "importPath": "omnicontrol.src.flux.lora_controller",
+        "description": "omnicontrol.src.flux.lora_controller",
+        "peekOfCode": "class enable_lora:\n    def __init__(self, lora_modules: List[BaseTunerLayer], activated: bool) -> None:\n        self.activated: bool = activated\n        if activated:\n            return\n        self.lora_modules: List[BaseTunerLayer] = [\n            each for each in lora_modules if isinstance(each, BaseTunerLayer)\n        ]\n        self.scales = [\n            {",
+        "detail": "omnicontrol.src.flux.lora_controller",
+        "documentation": {}
+    },
+    {
+        "label": "set_lora_scale",
+        "kind": 6,
+        "importPath": "omnicontrol.src.flux.lora_controller",
+        "description": "omnicontrol.src.flux.lora_controller",
+        "peekOfCode": "class set_lora_scale:\n    def __init__(self, lora_modules: List[BaseTunerLayer], scale: float) -> None:\n        self.lora_modules: List[BaseTunerLayer] = [\n            each for each in lora_modules if isinstance(each, BaseTunerLayer)\n        ]\n        self.scales = [\n            {\n                active_adapter: lora_module.scaling[active_adapter]\n                for active_adapter in lora_module.active_adapters\n            }",
+        "detail": "omnicontrol.src.flux.lora_controller",
+        "documentation": {}
+    },
+    {
+        "label": "encode_images",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.pipeline_tools",
+        "description": "omnicontrol.src.flux.pipeline_tools",
+        "peekOfCode": "def encode_images(pipeline: FluxPipeline, images: Tensor):\n    images = pipeline.image_processor.preprocess(images)\n    images = images.to(pipeline.device).to(pipeline.dtype)\n    images = pipeline.vae.encode(images).latent_dist.sample()\n    images = (\n        images - pipeline.vae.config.shift_factor\n    ) * pipeline.vae.config.scaling_factor\n    images_tokens = pipeline._pack_latents(images, *images.shape)\n    images_ids = pipeline._prepare_latent_image_ids(\n        images.shape[0],",
+        "detail": "omnicontrol.src.flux.pipeline_tools",
+        "documentation": {}
+    },
+    {
+        "label": "prepare_text_input",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.pipeline_tools",
+        "description": "omnicontrol.src.flux.pipeline_tools",
+        "peekOfCode": "def prepare_text_input(pipeline: FluxPipeline, prompts, max_sequence_length=512):\n    # Turn off warnings (CLIP overflow)\n    logger.setLevel(logging.ERROR)\n    (\n        prompt_embeds,\n        pooled_prompt_embeds,\n        text_ids,\n    ) = pipeline.encode_prompt(\n        prompt=prompts,\n        prompt_2=None,",
+        "detail": "omnicontrol.src.flux.pipeline_tools",
+        "documentation": {}
+    },
+    {
+        "label": "prepare_params",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.transformer",
+        "description": "omnicontrol.src.flux.transformer",
+        "peekOfCode": "def prepare_params(\n    hidden_states: torch.Tensor,\n    encoder_hidden_states: torch.Tensor = None,\n    pooled_projections: torch.Tensor = None,\n    timestep: torch.LongTensor = None,\n    img_ids: torch.Tensor = None,\n    txt_ids: torch.Tensor = None,\n    guidance: torch.Tensor = None,\n    joint_attention_kwargs: Optional[Dict[str, Any]] = None,\n    controlnet_block_samples=None,",
+        "detail": "omnicontrol.src.flux.transformer",
+        "documentation": {}
+    },
+    {
+        "label": "tranformer_forward",
+        "kind": 2,
+        "importPath": "omnicontrol.src.flux.transformer",
+        "description": "omnicontrol.src.flux.transformer",
+        "peekOfCode": "def tranformer_forward(\n    transformer: FluxTransformer2DModel,\n    condition_latents: torch.Tensor,\n    condition_ids: torch.Tensor,\n    condition_type_ids: torch.Tensor,\n    model_config: Optional[Dict[str, Any]] = {},\n    c_t=0,\n    **params: dict,\n):\n    self = transformer",
+        "detail": "omnicontrol.src.flux.transformer",
+        "documentation": {}
+    },
+    {
+        "label": "get_gpu_memory",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def get_gpu_memory():\n    \"\"\"Get total GPU memory in GB\"\"\"\n    try:\n        return torch.cuda.get_device_properties(0).total_memory / 1024**3\n    except:\n        return 0\ndef init_pipeline(profile_no=3, verbose_level=1):\n    \"\"\"Initialize the FLUX pipeline with OminiControl LoRA\"\"\"\n    global pipe\n    print(f\"🔧 Initializing pipeline with profile {profile_no}...\")",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "init_pipeline",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def init_pipeline(profile_no=3, verbose_level=1):\n    \"\"\"Initialize the FLUX pipeline with OminiControl LoRA\"\"\"\n    global pipe\n    print(f\"🔧 Initializing pipeline with profile {profile_no}...\")\n    gpu_memory = get_gpu_memory()\n    print(f\"📊 GPU Memory: {gpu_memory:.2f} GB\")\n    # Determine if we should use int8 quantization\n    use_quantization = (profile_no >= 4 or gpu_memory < 16)\n    # Get HuggingFace token if available\n    hf_token = os.environ.get(\"HF_TOKEN\", None)",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "process_image_and_text",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def process_image_and_text(image, text, num_steps=8, seed_value=None):\n    \"\"\"Process input image and text prompt to generate controlled image\"\"\"\n    global pipe\n    if pipe is None:\n        return None, \"❌ Pipeline not initialized. Please wait...\"\n    if image is None:\n        return None, \"⚠️ Please upload an image\"\n    if not text or text.strip() == \"\":\n        return None, \"⚠️ Please enter a text prompt\"\n    try:",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "get_samples",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def get_samples():\n    \"\"\"Get example images and prompts\"\"\"\n    sample_list = [\n        {\n            \"image\": \"assets/penguin.jpg\",\n            \"text\": \"On Christmas evening, on a crowded sidewalk, this item sits on the road, covered in snow and wearing a Christmas hat, holding a sign that reads 'Omini Control!'\",\n        },\n        {\n            \"image\": \"assets/oranges.jpg\",\n            \"text\": \"A very close up view of this item. It is placed on a wooden table. The background is a dark room, the TV is on, and the screen is showing a cooking show. With text on the screen that reads 'Omini Control!'\",",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "create_interface",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def create_interface():\n    \"\"\"Create Gradio interface\"\"\"\n    with gr.Blocks(title=\"OminiControlGP\") as demo:\n        gr.Markdown(\n            \"\"\"\n            # 🎨 OminiControlGP - Subject-Driven Image Generation\n            ### Powered by FLUX.1-schnell + OminiControl LoRA\n            Upload an object image and describe the scene you want. The model will generate a new image\n            with your object in the described context. Use phrases like \"this item\", \"the object\", or \"it\"\n            to refer to the subject.",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "def main():\n    parser = argparse.ArgumentParser(description=\"OminiControlGP Gradio Interface\")\n    parser.add_argument(\n        '--profile',\n        type=int,\n        default=int(os.environ.get('OMNI_PROFILE', '3')),\n        help='Memory profile (1-5, lower=more VRAM required)'\n    )\n    parser.add_argument(\n        '--verbose',",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"]",
+        "kind": 5,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"] = \"False\"\n# Import from src directory\nsys.path.insert(0, '/app')\nfrom src.flux.condition import Condition\nfrom src.flux.generate import seed_everything, generate\n# Try to import mmgp for GPU Poor optimization\ntry:\n    from mmgp import offload\n    MMGP_AVAILABLE = True\n    print(\"✅ mmgp module loaded - GPU Poor optimization enabled\")",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "pipe",
+        "kind": 5,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "pipe = None\nuse_int8 = False\ndef get_gpu_memory():\n    \"\"\"Get total GPU memory in GB\"\"\"\n    try:\n        return torch.cuda.get_device_properties(0).total_memory / 1024**3\n    except:\n        return 0\ndef init_pipeline(profile_no=3, verbose_level=1):\n    \"\"\"Initialize the FLUX pipeline with OminiControl LoRA\"\"\"",
+        "detail": "omnicontrol.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "use_int8",
+        "kind": 5,
+        "importPath": "omnicontrol.gradio_interface",
+        "description": "omnicontrol.gradio_interface",
+        "peekOfCode": "use_int8 = False\ndef get_gpu_memory():\n    \"\"\"Get total GPU memory in GB\"\"\"\n    try:\n        return torch.cuda.get_device_properties(0).total_memory / 1024**3\n    except:\n        return 0\ndef init_pipeline(profile_no=3, verbose_level=1):\n    \"\"\"Initialize the FLUX pipeline with OminiControl LoRA\"\"\"\n    global pipe",
+        "detail": "omnicontrol.gradio_interface",
         "documentation": {}
     },
     {
@@ -392,56 +1086,65 @@
         "documentation": {}
     },
     {
-        "label": "log_reader",
-        "kind": 2,
+        "label": "BlockTokenRangeProcessor",
+        "kind": 6,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def log_reader(process):\n    \"\"\"Read process output and put it in the log queue.\"\"\"\n    try:\n        for line in iter(process.stdout.readline, b''):\n            if line:\n                log_queue.put(line.decode('utf-8', errors='ignore'))\n        for line in iter(process.stderr.readline, b''):\n            if line:\n                log_queue.put(line.decode('utf-8', errors='ignore'))\n    except Exception as e:",
+        "peekOfCode": "class BlockTokenRangeProcessor(LogitsProcessor):\n    def __init__(self, start_id, end_id):\n        self.blocked = list(range(start_id, end_id))\n    def __call__(self, input_ids, scores):\n        scores[:, self.blocked] = -float(\"inf\")\n        return scores\ndef split_lyrics(lyrics):\n    \"\"\"Split lyrics into sections\"\"\"\n    sections = []\n    current = []",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "stop_generation",
+        "label": "log",
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def stop_generation():\n    \"\"\"Stop the current generation process.\"\"\"\n    global generation_process\n    with process_lock:\n        if generation_process and generation_process.poll() is None:\n            try:\n                generation_process.terminate()\n                generation_process.wait(timeout=5)\n            except subprocess.TimeoutExpired:\n                generation_process.kill()",
+        "peekOfCode": "def log(msg):\n    \"\"\"Print message with timestamp\"\"\"\n    ts = datetime.now().strftime(\"%H:%M:%S\")\n    print(f\"[{ts}] {msg}\")\ndef initialize_models(profile=3):\n    \"\"\"Initialize YuE models with mmgp optimization\"\"\"\n    print(\"🔧 Initializing YuE models...\")\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    STATE[\"device\"] = device\n    # Get HuggingFace token from environment",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "generate_music",
+        "label": "initialize_models",
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def generate_music(\n    stage1_model,\n    stage2_model,\n    genre_text,\n    lyrics_text,\n    max_new_tokens,\n    repetition_penalty,\n    stage2_batch_size,\n    run_n_segments,\n    seed,",
+        "peekOfCode": "def initialize_models(profile=3):\n    \"\"\"Initialize YuE models with mmgp optimization\"\"\"\n    print(\"🔧 Initializing YuE models...\")\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    STATE[\"device\"] = device\n    # Get HuggingFace token from environment\n    hf_token = os.environ.get(\"HF_TOKEN\", None)\n    # Download xcodec from HuggingFace to local directory\n    print(\"   Downloading xcodec (first time only)...\")\n    xcodec_local = Path(\"/app/xcodec_mini_infer\")",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "get_generation_logs",
+        "label": "split_lyrics",
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def get_generation_logs():\n    \"\"\"Get the latest logs from the generation process.\"\"\"\n    logs = \"\"\n    while not log_queue.empty():\n        try:\n            logs += log_queue.get_nowait()\n        except queue.Empty:\n            break\n    return logs\ndef list_output_files():",
+        "peekOfCode": "def split_lyrics(lyrics):\n    \"\"\"Split lyrics into sections\"\"\"\n    sections = []\n    current = []\n    for line in lyrics.strip().split(\"\\n\"):\n        if line.strip().startswith(\"[\") and current:\n            sections.append(\"\\n\".join(current))\n            current = [line]\n        else:\n            current.append(line)",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "list_output_files",
+        "label": "generate_song",
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def list_output_files():\n    \"\"\"List generated output files.\"\"\"\n    output_path = Path(OUTPUT_DIR)\n    if not output_path.exists():\n        return []\n    # Look for audio files\n    audio_files = []\n    for ext in ['*.wav', '*.mp3', '*.flac']:\n        audio_files.extend(output_path.glob(f\"**/{ext}\"))\n    # Sort by modification time (newest first)",
+        "peekOfCode": "def generate_song(genres, lyrics, num_segments=2, seed=42):\n    \"\"\"Generate song from lyrics and genre tags\"\"\"\n    if not STATE[\"models\"]:\n        return \"⚠️ Models not loaded. Please wait for initialization.\", None, None\n    start_time = time.time()\n    log(f\"🎵 Generating song (seed={seed}, segments={num_segments})...\")\n    torch.manual_seed(seed)\n    np.random.seed(seed)\n    # Clear CUDA cache to ensure clean state for each run\n    if torch.cuda.is_available():",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "load_example_prompts",
+        "label": "stage2_inference",
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def load_example_prompts():\n    \"\"\"Load example prompts from the YuE repository.\"\"\"\n    examples = {}\n    # Try to load genre examples\n    genre_path = Path(YUE_PATH) / \"prompt_egs\" / \"genre.txt\"\n    if genre_path.exists():\n        with open(genre_path, 'r') as f:\n            examples['genre'] = f.read().strip()\n    else:\n        examples['genre'] = EXAMPLE_GENRE",
+        "peekOfCode": "def stage2_inference(semantic_npy, track_type):\n    \"\"\"Convert semantic tokens (from ids2npy) to audio using Stage 2 model\n    Reference implementation from YuEGP/inference/infer.py\n    mmgp handles model layer offloading automatically - don't force to GPU!\n    \"\"\"\n    model_s2 = STATE[\"models\"][\"stage2\"]\n    codec_tool = STATE[\"codec_tool\"]\n    codec_tool_s2 = STATE[\"codec_tool_s2\"]\n    tokenizer = STATE[\"tokenizer\"]\n    device = STATE[\"device\"]",
+        "detail": "yue.gradio_interface",
+        "documentation": {}
+    },
+    {
+        "label": "stage2_generate",
+        "kind": 2,
+        "importPath": "yue.gradio_interface",
+        "description": "yue.gradio_interface",
+        "peekOfCode": "def stage2_generate(prompt, tokenizer, model_s2, device, codec_tool):\n    \"\"\"Generate 8-codebook audio tokens from 1-codebook semantic tokens\n    Args:\n        prompt: numpy array (1, T) with values 0-1023 (raw codec values from ids2npy)\n        tokenizer: MMTokenizer\n        model_s2: Stage 2 model\n        device: torch device\n        codec_tool: CodecManipulator for xcodec (n_quantizer=1)\n    \"\"\"\n    # Unflatten prompt to get (1, T) codec_ids and add offset",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
@@ -450,151 +1153,25 @@
         "kind": 2,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "def create_interface():\n    \"\"\"Create the Gradio interface.\"\"\"\n    # Load examples\n    examples = load_example_prompts()\n    with gr.Blocks(\n        title=\"YuE Music Generation\",\n        theme=gr.themes.Soft(),\n        css=\"\"\"\n        .container { max-width: 1200px; margin: auto; }\n        .header { text-align: center; padding: 20px; }",
+        "peekOfCode": "def create_interface():\n    \"\"\"Create Gradio interface\"\"\"\n    with gr.Blocks(title=\"YuE GPU-Poor\") as interface:\n        gr.Markdown(\"# YuE GPU-Poor - RTX 3060 12GB Optimized\")\n        gr.Markdown(\"Generate songs from lyrics using mmgp Profile 3 (12GB VRAM + 8-bit quantization)\")\n        with gr.Row():\n            with gr.Column():\n                genres_input = gr.Textbox(\n                    label=\"Genre Tags (5 descriptors)\",\n                    placeholder=\"inspiring female uplifting pop airy vocal electronic bright vocal\",",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "generation_process",
+        "label": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"]",
         "kind": 5,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "generation_process = None\nlog_queue = queue.Queue()\nprocess_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")",
+        "peekOfCode": "os.environ[\"GRADIO_ANALYTICS_ENABLED\"] = \"False\"\nimport gc\nimport sys\nimport time\nfrom datetime import datetime\nimport torch\nimport gradio as gr\nimport numpy as np\nimport soundfile as sf\nfrom pathlib import Path",
         "detail": "yue.gradio_interface",
         "documentation": {}
     },
     {
-        "label": "log_queue",
+        "label": "STATE",
         "kind": 5,
         "importPath": "yue.gradio_interface",
         "description": "yue.gradio_interface",
-        "peekOfCode": "log_queue = queue.Queue()\nprocess_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "process_lock",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "process_lock = threading.Lock()\n# Configuration\nYUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "YUE_PATH",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "YUE_PATH = \"/app/YuE\"\nOUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "OUTPUT_DIR",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "OUTPUT_DIR = \"/app/output\"\nCACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "CACHE_DIR",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "CACHE_DIR = \"/app/cache\"\n# Default values from environment variables\nDEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_STAGE1_MODEL",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_STAGE1_MODEL = os.getenv(\"YUE_STAGE1_MODEL\", \"m-a-p/YuE-s1-7B-anneal-en-cot\")\nDEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_STAGE2_MODEL",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_STAGE2_MODEL = os.getenv(\"YUE_STAGE2_MODEL\", \"m-a-p/YuE-s2-1B-general\")\nDEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_CUDA_IDX",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_CUDA_IDX = int(os.getenv(\"YUE_CUDA_IDX\", \"0\"))\nDEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_MAX_NEW_TOKENS",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_MAX_NEW_TOKENS = int(os.getenv(\"YUE_MAX_NEW_TOKENS\", \"3000\"))\nDEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_REPETITION_PENALTY",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_REPETITION_PENALTY = float(os.getenv(\"YUE_REPETITION_PENALTY\", \"1.1\"))\nDEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_STAGE2_BATCH_SIZE",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_STAGE2_BATCH_SIZE = int(os.getenv(\"YUE_STAGE2_BATCH_SIZE\", \"4\"))\nDEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_RUN_N_SEGMENTS",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_RUN_N_SEGMENTS = int(os.getenv(\"YUE_RUN_N_SEGMENTS\", \"2\"))\nDEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "DEFAULT_SEED",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "DEFAULT_SEED = int(os.getenv(\"YUE_SEED\", \"42\"))\n# Example prompts\nEXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "EXAMPLE_GENRE",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "EXAMPLE_GENRE = \"inspiring female uplifting pop airy vocal electronic bright vocal\"\nEXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers\nFighting through the dark\nWe are believers",
-        "detail": "yue.gradio_interface",
-        "documentation": {}
-    },
-    {
-        "label": "EXAMPLE_LYRICS",
-        "kind": 5,
-        "importPath": "yue.gradio_interface",
-        "description": "yue.gradio_interface",
-        "peekOfCode": "EXAMPLE_LYRICS = \"\"\"[verse]\nRunning in the night\nMy heart beats like a drum\nI'm searching for the light\nIn this city so cold\n[chorus]\nWe are the dreamers\nFighting through the dark\nWe are believers\nFollowing our heart\"\"\"",
+        "peekOfCode": "STATE = {\"device\": None, \"models\": {}, \"tokenizer\": None, \"codec\": None}\ndef log(msg):\n    \"\"\"Print message with timestamp\"\"\"\n    ts = datetime.now().strftime(\"%H:%M:%S\")\n    print(f\"[{ts}] {msg}\")\ndef initialize_models(profile=3):\n    \"\"\"Initialize YuE models with mmgp optimization\"\"\"\n    print(\"🔧 Initializing YuE models...\")\n    device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n    STATE[\"device\"] = device",
         "detail": "yue.gradio_interface",
         "documentation": {}
     }

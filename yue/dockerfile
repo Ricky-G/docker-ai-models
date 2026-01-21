@@ -1,115 +1,27 @@
-# Base image with CUDA 11.8 and cuDNN support
-FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+# YuE GPU-Poor - RTX 3060 12GB optimized
+FROM nvidia/cuda:12.4.1-cudnn-runtime-ubuntu22.04
 
-# Set environment variables
 ENV DEBIAN_FRONTEND=noninteractive \
-    CONDA_DIR=/opt/conda \
-    PATH=/opt/conda/bin:$PATH \
     PYTHONUNBUFFERED=1 \
-    NVIDIA_VISIBLE_DEVICES=all \
-    NVIDIA_DRIVER_CAPABILITIES=compute,utility \
-    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+    PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
+    HF_HOME=/app/models \
+    TORCH_HOME=/app/models \
+    PIP_CACHE_DIR=/app/models/pip
 
-# Install system dependencies and Miniconda
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    wget git git-lfs ca-certificates curl build-essential && \
-    wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh && \
-    bash /tmp/miniconda.sh -b -p $CONDA_DIR && \
-    rm /tmp/miniconda.sh && \
+    python3.10 python3-pip python3-dev git git-lfs build-essential \
+    libsndfile1 ffmpeg && \
+    python3 -m pip install --upgrade pip && \
     git lfs install && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    rm -rf /var/lib/apt/lists/*
 
-# Create and activate conda environment
-RUN conda create -n yue python=3.8 -y && \
-    conda clean -a -y
-
-# Use the conda environment
-SHELL ["conda", "run", "-n", "yue", "/bin/bash", "-c"]
-
-# Install PyTorch with CUDA support and other dependencies
-# Official YuE requirement: conda install pytorch torchvision torchaudio cudatoolkit=11.8 -c pytorch -c nvidia
-RUN conda install -y pytorch torchvision torchaudio cudatoolkit=11.8 -c pytorch -c nvidia && \
-    pip install --no-cache-dir --upgrade pip wheel && \
-    conda clean -a -y
-
-# Set working directory
 WORKDIR /app
 
-# Clone YuE repository and install requirements
-RUN git clone --depth=1 https://github.com/multimodal-art-projection/YuE.git && \
-    cd YuE && \
-    git lfs pull && \
-    pip install --no-cache-dir -r requirements.txt && \
-    pip install --no-cache-dir flash-attn --no-build-isolation && \
-    pip install --no-cache-dir gradio
-
-# Clone xcodec_mini_infer repository
-RUN git clone https://huggingface.co/m-a-p/xcodec_mini_infer /app/YuE/inference/xcodec_mini_infer
-
-# Create necessary directories
-RUN mkdir -p /app/output /app/cache/huggingface /app/cache/torch
-
-# Copy startup script and Gradio interface
-COPY startup.sh /app/startup.sh
-COPY gradio_interface.py /app/gradio_interface.py
+COPY requirements.txt gradio_interface.py startup.sh /app/
 RUN chmod +x /app/startup.sh
 
-# Runtime configuration via ENV vars (Official YuE infer.py parameters)
-ENV YUE_CUDA_IDX=0 \
-    YUE_AUTO_UPDATE=0 \
-    YUE_STAGE1_MODEL=m-a-p/YuE-s1-7B-anneal-en-cot \
-    YUE_STAGE2_MODEL=m-a-p/YuE-s2-1B-general \
-    YUE_MAX_NEW_TOKENS=3000 \
-    YUE_REPETITION_PENALTY=1.1 \
-    YUE_STAGE2_BATCH_SIZE=4 \
-    YUE_RUN_N_SEGMENTS=2 \
-    YUE_USE_AUDIO_PROMPT=0 \
-    YUE_USE_DUAL_TRACKS_PROMPT=0 \
-    YUE_KEEP_INTERMEDIATE=1 \
-    YUE_SEED=42 \
-    YUE_MODE=web
+ENV YUE_PROFILE=3
 
-# Expose port for Gradio web interface
 EXPOSE 7860
 
-# Set entrypoint
-CMD ["bash", "/app/startup.sh"]
-
-## Build and Run Instructions:
-## 
-## Build:
-##   docker build -f dockerfile -t yue:latest .
-##
-## Run (Web Interface Mode - Default):
-##   docker run -it --rm --name yue `
-##     --gpus all `
-##     --shm-size=16g `
-##     -p 7860:7860 `
-##     -v "C:\_Models\yue\cache:/app/cache" `
-##     -v "C:\_Models\yue\output:/app/output" `
-##     -e YUE_MODE=web `
-##     yue:latest
-##
-## Run (CLI Mode - Original):
-##   docker run -it --rm --name yue `
-##     --gpus all `
-##     --shm-size=16g `
-##     -v "C:\_Models\yue\cache:/app/cache" `
-##     -v "C:\_Models\yue\output:/app/output" `
-##     -e YUE_MODE=cli `
-##     -e YUE_STAGE1_MODEL=m-a-p/YuE-s1-7B-anneal-en-cot `
-##     -e YUE_STAGE2_MODEL=m-a-p/YuE-s2-1B-general `
-##     -e YUE_RUN_N_SEGMENTS=2 `
-##     -e YUE_USE_AUDIO_PROMPT=0 `
-##     yue:latest
-##
-## Web Interface Access:
-##   Open http://localhost:7860 in your browser when using web mode
-##
-## For ICL (In-Context Learning) with audio prompt:
-##   Add: -e YUE_USE_AUDIO_PROMPT=1 -e YUE_AUDIO_PROMPT_PATH=/app/YuE/prompt_egs/your_audio.mp3
-##
-## For dual-track ICL:
-##   Add: -e YUE_USE_DUAL_TRACKS_PROMPT=1 -e YUE_VOCAL_TRACK_PROMPT_PATH=... -e YUE_INSTRUMENTAL_TRACK_PROMPT_PATH=...
-##
-## Output: Generated music will be saved to C:\_Models\yue\output\
+CMD ["/bin/bash", "/app/startup.sh"]

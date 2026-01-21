@@ -1,0 +1,30 @@
+# YuE GPU-Poor Requirements (based on YuEGP official requirements)
+
+# Core ML
+torch==2.5.1
+transformers==4.48.1
+accelerate
+einops
+
+# Audio processing
+soundfile
+librosa
+torchaudio
+descript-audiotools>=0.7.2
+descript-audio-codec
+scipy==1.10.1
+
+# mmgp for GPU optimization
+mmgp>=3.1.4
+
+# Gradio interface
+gradio
+
+# Utilities
+numpy
+omegaconf
+tqdm
+tensorboard
+sentencepiece
+matplotlib
+huggingface_hub
