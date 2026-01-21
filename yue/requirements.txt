@@ -1,7 +1,7 @@
 # YuE GPU-Poor Requirements (based on YuEGP official requirements)
 
 # Core ML
-torch==2.5.1
+torch==2.8.0
 transformers==4.48.1
 accelerate
 einops
