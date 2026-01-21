@@ -124,4 +124,4 @@ To add a new model:
 
 ## License
 
-MIT License
+[MIT License](LICENSE)
