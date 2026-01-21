@@ -2,7 +2,7 @@
 
 # Core ML
 torch==2.5.1
-transformers==4.48.1
+transformers==4.53.0
 accelerate
 einops
 
