@@ -54,7 +54,7 @@ Werkzeug==3.1.4
 braceexpand==0.1.7
 filelock==3.20.1
 packaging==24.0
-protobuf==4.25.8
+protobuf==5.29.6
 hjson==3.1.0
 
 # Monitoring and logging
