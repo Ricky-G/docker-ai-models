@@ -7,7 +7,7 @@ triton==2.1.0
 
 # Computer Vision
 opencv-python-headless==4.9.0.80
-Pillow==10.3.0
+Pillow==12.1.1
 imageio==2.34.0
 scikit-image==0.21.0
 
