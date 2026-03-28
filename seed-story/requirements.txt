@@ -28,7 +28,7 @@ PyWavelets==1.4.1
 
 # Model training and optimization
 pytorch-lightning==2.2.1
-deepspeed==0.9.5
+deepspeed==0.15.1
 peft==0.4.0
 safetensors==0.4.2
 
