@@ -43,7 +43,7 @@ omegaconf==2.3.0
 pyrootutils==1.0.4
 PyYAML==6.0.1
 click==8.1.7
-tqdm==4.66.2
+tqdm==4.66.3
 
 # Web and API
 Flask==3.0.2
